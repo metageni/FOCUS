@@ -50,7 +50,7 @@ Multiple files:
 as STAMP's input for statistical analysis.
 
 - Split STAMP output in different levels by setting -l to the wanted level 
-(default: all; options: kingdom, phylum, class, order, family, genus, or species)
+  (default - all; options: kingdom, phylum, class, order, family, genus, or species)
 -----
 For further info please visit the FOCUS website at http://edwards.sdsu.edu/FOCUS
 
