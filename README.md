@@ -8,6 +8,8 @@ version: 0.3
 website: 	   http://edwards.sdsu.edu/FOCUS
 
 
+(!) IMPORTANT
+If you are using FOCUS cloned from github, please uncompress "db.zip" file
 (1) USAGE
 -----
 python focus.py -q query_sequence.fna [-k] [-m] [-s]
