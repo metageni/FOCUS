@@ -57,10 +57,10 @@ For further info please visit the FOCUS website at http://edwards.sdsu.edu/FOCUS
 
 (4) DEPENDENCIES
 ------------
--Python >= 2.7.X and 3.0: http://www.python.org/download
--Jellyfish: http://www.cbcb.umd.edu/software/jellyfish
--Numpy: http://sourceforge.net/projects/numpy/files/NumPy
--SciPy: http://sourceforge.net/projects/scipy
+- Python >= 2.7.X and 3.0: http://www.python.org/download
+- Jellyfish: http://www.cbcb.umd.edu/software/jellyfish
+- Numpy: http://sourceforge.net/projects/numpy/files/NumPy
+- SciPy: http://sourceforge.net/projects/scipy
 
 COPYRIGHT AND LICENSE
 ---------------------
