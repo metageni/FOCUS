@@ -1,12 +1,6 @@
-  ______ ____   _____ _    _  _____ 
- |  ____/ __ \ / ____| |  | |/ ____|
- | |__ | |  | | |    | |  | | (___  
- |  __|| |  | | |    | |  | |\___ \ 
- | |   | |__| | |____| |__| |____) |
- |_|    \____/ \_____|\____/|_____/ 
-
+#FOCUS
 An Alignment-Free Model To Identify Organisms In Metagenomes Using Non-Negative Least Squares 
-version: 0.29
+version: 0.3
 -----
 
 (c)            Silva, G. G. Z., D. A. Cuevas, B. E. Dutilh, and R. A. Edwards, 2014: FOCUS: an alignment-free model
