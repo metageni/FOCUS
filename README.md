@@ -1,6 +1,6 @@
 #FOCUS
 An Alignment-Free Model To Identify Organisms In Metagenomes Using Non-Negative Least Squares 
-version: 0.3
+version: 0.31
 -----
 
 (c)            Silva, G. G. Z., D. A. Cuevas, B. E. Dutilh, and R. A. Edwards, 2014: FOCUS: an alignment-free model
@@ -14,7 +14,7 @@ If you are using FOCUS cloned from github, please uncompress "db.zip" file.
 
 (1) USAGE
 -----
-python focus.py -q query_sequence.fna [-k] [-m] [-s]
+python focus.py -q query_sequence.fna [-k] [-m]
 
 	-q Specify input file. 
 		Required: Input files should be in FASTA/FASTQ format. 
@@ -23,8 +23,6 @@ python focus.py -q query_sequence.fna [-k] [-m] [-s]
 		6,7 and 8 frequencies are available. 
 	
 	-m minimum relative abundance to show in the results (default: 1%)
-	
-	-s output in the STAMP format for multiple files [0=False (default) and 1=True]
 	
 	-l Split STAMP output in different levels (default: all; options: kingdom, phylum, class, order, family, genus, or species)
 

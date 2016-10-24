@@ -1,4 +1,6 @@
-# FOCUS version 0.3
+#!/usr/bin/python
+
+# FOCUS version 0.31
 from numpy import array,linspace,zeros,eye,concatenate,sum as SUM,linalg
 from scipy.optimize import nnls
 import os,sys,random
@@ -11,13 +13,12 @@ parameters={"-k":"7","-q":"","-m":"1","-d":"","dir":"","-s":"0","-l":"all"}
 # [-k] k-mer choice
 # [-m] minimum abundance percent
 # [-d] data to insert into the Database
-# [-s] STAMP output for multiple samples
 # [-l] Split STAMP output in different levels (default: all; options: kingdom, phylum, class, order, family, genus, or species
 
 usage="FOCUS: An Alignment-Free Model To Identify Organisms In Metagenomes Using Non-Negative Least Squares\n"\
        "---------------------------------------------------------------------------------------------------------------------------------\n"\
        "USAGE:"\
-       "\npython focus.py -q query_sequence.fna [-k] [-m] [-s]\n"\
+       "\npython focus.py -q query_sequence.fna [-k] [-m]\n"\
        "   -q Specify input file or directory with multiples samples.\n"\
        "      Required: Input files should be in FASTA format\n"\
        "   -k Specify k-mer frequency used on the profile (default: 7)\n"\
@@ -26,11 +27,10 @@ usage="FOCUS: An Alignment-Free Model To Identify Organisms In Metagenomes Using
        "   -m minimum relative abundance to show in the results (default: 1%)\n"\
        "      Cut-off for the showing results.\n   -d Insert your own data into the database\n"\
        "      more information README .\n"\
-       "   -s output in the STAMP format for multiple files [0=False (default) and 1=True]\n"\
-       "   -l Split STAMP output in different levels (default: all; options: kingdom, phylum, class, order, family, genus, or species)"\
+       "   -l Split STAMP output in different levels (default: all; options: kingdom, phylum, class, order, family, genus, or species)\n"\
        "---------------------------------------------------------------------------------------------------------------------------------\n"\
        "example 1 > (single file) python focus.py -q query.fasta\n"\
-       "example 2 > (multiple files) python focus.py -q samples directory -s 1\n"
+       "example 2 > (multiple files) python focus.py -q samples directory\n"
 
 
 #######################################################
@@ -48,7 +48,9 @@ def setParameters():
                 print "Please inform a value for "+userParameters[i]
             else:
                 print userParameters[i]+" is not a valid parameter"
-                
+
+    if os.path.isdir(parameters["-q"]):
+        parameters["-s"]='1'
                     
 setParameters()#store user parameters
 
