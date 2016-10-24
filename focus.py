@@ -1,5 +1,4 @@
 #!/usr/bin/python
-
 # FOCUS version 0.31
 from numpy import array,linspace,zeros,eye,concatenate,sum as SUM,linalg
 from scipy.optimize import nnls
