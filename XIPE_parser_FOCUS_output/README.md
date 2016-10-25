@@ -8,9 +8,12 @@ were statistically different in a confidence level
 
 
 xipe_comparison.py: Uses XIPE for a non-parametric statistical comparision of the samples in the FOCUS ouput
-     -q FOCUS output (*__STAMP_tabular.spf
-     -c Minimum Confidence Level (Default: 95)
-     -l Comparison Level [kingdom,phylum,class,order,family,genus,species,strain,all](Default: genus)
-     -o Output Name (Default: my_xipe_output.xls)
+	-q FOCUS output (*__STAMP_tabular.spf
+	
+	-c Minimum Confidence Level (Default: 95)
+	
+	-l Comparison Level [kingdom, phylum, class, order, family, genus, species, strain, all](Default: genus)
+	
+	-o Output Name (Default: my_xipe_output.xls)
      
 	 example> python xipe_comparison.py -q input__STAMP_tabular.spf.xls -c 95 -l genus -o xipe__genus___sharks_ouput
