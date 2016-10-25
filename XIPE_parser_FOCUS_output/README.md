@@ -17,4 +17,4 @@ xipe_comparison.py: Uses XIPE for a non-parametric statistical comparision of th
 	
 	-o Output Name (Default: my_xipe_output.xls)
      
-	 example> python xipe_comparison.py -q input__STAMP_tabular.spf.xls -c 95 -l genus -o xipe__genus___sharks_ouput
+	 example> python xipe_comparison.py -q input__STAMP_tabular.spf.xls -c 95 -l genus -o sharks_ouput
