@@ -8,6 +8,7 @@ were statistically different in a confidence level
 
 
 xipe_comparison.py: Uses XIPE for a non-parametric statistical comparision of the samples in the FOCUS ouput
+
 	-q FOCUS output (*__STAMP_tabular.spf
 	
 	-c Minimum Confidence Level (Default: 95)
