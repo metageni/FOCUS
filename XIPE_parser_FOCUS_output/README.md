@@ -1,7 +1,7 @@
 xipe_comparison.py 0.1
 ----------------------------------------------
 This program uses FOCUS output (http://edwards.sdsu.edu/FOCUS) into XIPE (http://edwards.sdsu.edu/cgi-bin/xipe.cgi)
-For a a non-parametric statistical analysis of the distribution of samples to determine which samples are statistically
+for a a non-parametric statistical analysis of the distribution of samples to determine which samples are statistically
 significantly different.
 The script parses FOCUS output and compare the each pair of samples and reports which targeted level (Genus for example)
 were statistically different in a confidence level
