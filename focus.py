@@ -1,4 +1,5 @@
 #!/usr/bin/python
+
 # FOCUS version 0.31
 from numpy import array,linspace,zeros,eye,concatenate,sum as SUM,linalg
 from scipy.optimize import nnls
@@ -46,7 +47,8 @@ def setParameters():
             if userParameters[i] in parameters:
                 print "Please inform a value for "+userParameters[i]
             else:
-                print userParameters[i]+" is not a valid parameter"
+                if "-h" not in userParameters:
+                    print userParameters[i]+" is not a valid parameter"
 
     if os.path.isdir(parameters["-q"]):
         parameters["-s"]='1'
