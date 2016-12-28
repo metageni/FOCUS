@@ -63,8 +63,10 @@ For further info please visit the FOCUS website at http://edwards.sdsu.edu/FOCUS
 #FOCUS Confidence Interval
 We have added to FOCUS the option to compute the confindence interval for each of the taxa predicted by FOCUS.
 Use "focus_confidence_interval.py" for the confidence interval option. It will resample your query [-q] with 50% [-p] (default) 1000 times [-r] (default)
+
 ------------
 Example command line: python focus_confidence_interval.py -q sequences.fasta -p 50 -r 1000
+------------
 
 COPYRIGHT AND LICENSE
 ---------------------
