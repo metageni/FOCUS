@@ -248,6 +248,9 @@ else:
             h={}
             for line in db:
                 line=line.split("\t")
+                if SUM(line[8:]) == 0:
+                    sys.stderr.write("There are no kmers found for " + "\t".join(line[:8]) + "\n")
+                    continue
                 h["\t".join(line[:8])]=normalise(array(line[8:], dtype='i'))#array([int(x) for x in line[8:]])
             db.close()
             
