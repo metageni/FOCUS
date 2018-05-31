@@ -247,6 +247,9 @@ else:
         #Loads the Database selected by the user              #
         #######################################################
         def loadDB():
+            if not os.path.exists(parameters["dir"]+"db/k"+parameters["-k"]):
+                sys.stderr.write("ERROR: Database " +parameters["dir"]+"db/k"+parameters["-k"] + " was not found. Did you extract db.zip?\n")
+                sys.exit()
             db=open(parameters["dir"]+"db/k"+parameters["-k"])
             db.readline()
             h={}
