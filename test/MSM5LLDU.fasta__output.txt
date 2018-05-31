@@ -1,0 +1,103 @@
+Query: test/MSM5LLDU.fasta
+K-mer size: 7
+
+Kingdom Level
+Rank	Predicted Organism	Estimated Abundance (%)
+1	Bacteria	95.2776307804
+2	Archaea	4.72236921958
+
+Phylum Level
+Rank	Predicted Organism	Estimated Abundance (%)
+1	Bacteroidetes	80.1028793812
+2	Firmicutes	7.87357590683
+3	Crenarchaeota	2.62039164638
+4	Spirochaetes	2.31783059847
+5	Thaumarchaeota	1.89285520872
+6	Proteobacteria	1.8437620961
+7	Aquificae	1.48830645646
+-	Others (abundance < 1%)	1.87
+
+Class Level
+Rank	Predicted Organism	Estimated Abundance (%)
+1	Bacteroidia	78.0587801748
+2	Clostridia	7.61954667922
+3	Thermoprotei	2.62039164638
+4	Spirochaetia	2.31783059847
+5	Unknown Class	2.05934937938
+6	Sphingobacteriia	2.04409920634
+7	Aquificae	1.48830645646
+8	Alphaproteobacteria	1.12299034792
+-	Others (abundance < 1%)	2.67
+
+Order Level
+Rank	Predicted Organism	Estimated Abundance (%)
+1	Bacteroidales	78.0587801748
+2	Clostridiales	5.70232085623
+3	Desulfurococcales	2.45068494184
+4	Spirochaetales	2.31783059847
+5	Sphingobacteriales	2.04409920634
+6	Thermoanaerobacterales	1.91722582299
+7	Cenarchaeales	1.89285520872
+8	Aquificales	1.48830645646
+9	Rickettsiales	1.12299034792
+-	Others (abundance < 1%)	3.01
+
+Family Level
+Rank	Predicted Organism	Estimated Abundance (%)
+1	Bacteroidaceae	65.5946732485
+2	Prevotellaceae	6.57370235894
+3	Eubacteriaceae	3.42323728348
+4	Porphyromonadaceae	3.37113932481
+5	Rikenellaceae	2.51926524262
+6	Spirochaetaceae	2.31783059847
+7	Unknown Family	2.28465955318
+8	Ruminococcaceae	2.27908357275
+9	Thermoanaerobacterales_Family_IV._Incertae_Sedis	1.91722582299
+10	Cenarchaeaceae	1.89285520872
+11	Desulfurococcaceae	1.8865053719
+12	Aquificaceae	1.48830645646
+13	Anaplasmataceae	1.12299034792
+-	Others (abundance < 1%)	3.34
+
+Genus Level
+Rank	Predicted Organism	Estimated Abundance (%)
+1	Bacteroides	65.5946732485
+2	Prevotella	6.57370235894
+3	Eubacterium	3.42323728348
+4	Parabacteroides	3.00810957398
+5	Alistipes	2.51926524262
+6	Chitinophaga	2.04409920634
+7	Mahella	1.91722582299
+8	Cenarchaeum	1.89285520872
+9	Faecalibacterium	1.66073709429
+10	Thermocrinis	1.48830645646
+11	Desulfurococcus	1.30994756082
+12	Treponema	1.25593593996
+13	Anaplasma	1.12299034792
+14	Spirochaeta	1.06189465851
+-	Others (abundance < 1%)	5.14
+
+Species Level
+Rank	Predicted Organism	Estimated Abundance (%)
+1	Bacteroides_helcogenes	19.1211636317
+2	Bacteroides_xylanisolvens	15.5031066261
+3	Bacteroides_salanitronis	11.3255480363
+4	Bacteroides_thetaiotaomicron	8.36145300543
+5	Bacteroides_vulgatus	6.59710893868
+6	Prevotella_denticola	4.42671781981
+7	Bacteroides_fragilis	4.27881060106
+8	Eubacterium_siraeum	3.42323728348
+9	Parabacteroides_distasonis	3.00810957398
+10	Alistipes_finegoldii	2.51926524262
+11	Chitinophaga_pinensis	2.04409920634
+12	Mahella_australiensis	1.91722582299
+13	Cenarchaeum_symbiosum	1.89285520872
+14	Prevotella_intermedia	1.69865846183
+15	Faecalibacterium_prausnitzii	1.66073709429
+16	Thermocrinis_albus	1.48830645646
+17	Desulfurococcus_fermentans	1.30994756082
+18	Treponema_brennaborense	1.25593593996
+19	Anaplasma_centrale	1.12299034792
+20	Spirochaeta_africana	1.06189465851
+-	Others (abundance < 1%)	5.98
+
