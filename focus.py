@@ -179,7 +179,9 @@ elif parameters["-d"]!="":
                 print line[0]+" - "+k+"-mer (done)"
                 
         f.close()
-    except:
+    except Exception as e:
+        print(e)
+        print(traceback.format_exc())
         print usage
 
 ###check if the query exists or if it is adding genome to the db
