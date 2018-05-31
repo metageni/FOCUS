@@ -8,7 +8,7 @@ import os,sys,random
 ##############################
 #  Program Defaults parameters#
 ##############################
-parameters={"-k":"7","-q":"","-m":"1","-d":"","dir":"","-s":"0","-l":"all"}
+parameters={"-k":"7","-q":"","-m":"1","-d":"","-b":"","dir":"","-s":"0","-l":"all"}
 # [-q] metagenome sequence files in FASTA format  or directory (multi-samples; please set -s 1)
 # [-k] k-mer choice
 # [-m] minimum abundance percent
@@ -27,6 +27,7 @@ usage="FOCUS: An Alignment-Free Model To Identify Organisms In Metagenomes Using
        "   -m minimum relative abundance to show in the results (default: 1%)\n"\
        "      Cut-off for the showing results.\n   -d Insert your own data into the database\n"\
        "      more information README .\n"\
+       "   -b alternate directory for your databases. You will need k6, k7, or k8 depending on k-mer size\n"\
        "   -l Split STAMP output in different levels (default: all; options: kingdom, phylum, class, order, family, genus, or species)\n"\
        "---------------------------------------------------------------------------------------------------------------------------------\n"\
        "example 1 > (single file) python focus.py -q query.fasta\n"\
@@ -37,8 +38,6 @@ usage="FOCUS: An Alignment-Free Model To Identify Organisms In Metagenomes Using
 #Read and save the parameters given by the user       #
 #######################################################
 def setParameters():
-    if "/" in sys.argv[0]:
-        parameters["dir"]="/".join(sys.argv[0].split("/")[:-1])+"/"
     userParameters=sys.argv[1:]
     for i in range(0,len(userParameters),2):
         try:
@@ -49,6 +48,11 @@ def setParameters():
             else:
                 if "-h" not in userParameters:
                     print userParameters[i]+" is not a valid parameter"
+    
+    if parameters["-b"]:
+        parameters["dir"]=parameters["-b"]
+    elif "/" in sys.argv[0]:
+        parameters["dir"]="/".join(sys.argv[0].split("/")[:-1])+"/"
 
     if os.path.isdir(parameters["-q"]):
         parameters["-s"]='1'
