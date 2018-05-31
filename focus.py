@@ -4,6 +4,7 @@
 from numpy import array,linspace,zeros,eye,concatenate,sum as SUM,linalg
 from scipy.optimize import nnls
 import os,sys,random
+import traceback
 
 ##############################
 #  Program Defaults parameters#
@@ -255,7 +256,7 @@ else:
             h={}
             for line in db:
                 line=line.split("\t")
-                if SUM(line[8:]) == 0:
+                if '0' in line[9] and SUM(array(line[8:], dtype='i')) == 0:
                     sys.stderr.write("There are no kmers found for " + "\t".join(line[:8]) + "\n")
                     continue
                 h["\t".join(line[:8])]=normalise(array(line[8:], dtype='i'))#array([int(x) for x in line[8:]])
@@ -437,5 +438,7 @@ else:
                     o.close()
                     
         main() 
-    except:
+    except Exception as e:
+        print(e)
+        print(traceback.format_exc())
         print usage
