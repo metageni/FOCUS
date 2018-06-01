@@ -5,6 +5,12 @@ This is a test data set provided by Rob. The run in the fasta file comes from th
 [SRX3105022](https://www.ncbi.nlm.nih.gov/sra/SRX3105022).
 I chose this because it is a human gut data set and should have lots of well characterized bacteria.
 
+To run the test use:
+
+```
+python focus.py test/MSM5LLDU.fasta
+```
+
 Here is the output table for species level that you should get, and the full output file is [also included](MSM5LLDU.fasta__output.txt)
 
 
@@ -32,4 +38,16 @@ Here is the output table for species level that you should get, and the full out
 | 19 |      Anaplasma_centrale |      1.12299034792
 | 20 |      Spirochaeta_africana |    1.06189465851
 | - |       Others (abundance < 1%) |         5.98
+
+
+# Testing the stamp output
+
+The directory test_stamp has several fasta files from the same series as described above ([SRX3105022](https://www.ncbi.nlm.nih.gov/sra/SRX3105022)). You can use this dataset to output tab-separated files that you can open in Libre Office, Excel, or STAMP.
+
+To run that test use:
+
+```
+python focus.py -q test/test_stamp
+```
+
 
