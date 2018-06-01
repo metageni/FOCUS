@@ -101,3 +101,27 @@ Rank	Predicted Organism	Estimated Abundance (%)
 20	Spirochaeta_africana	1.06189465851
 -	Others (abundance < 1%)	5.98
 
+Strain Level
+Rank	Predicted Organism	Estimated Abundance (%)
+1	Bacteroides_helcogenes_P_36_108_uid62135	19.1211636317
+2	Bacteroides_xylanisolvens_XB1A_uid197168	15.5031066261
+3	Bacteroides_salanitronis_DSM_18170_uid63269	11.3255480363
+4	Bacteroides_thetaiotaomicron_VPI_5482_uid62913	8.36145300543
+5	Bacteroides_vulgatus_ATCC_8482_uid58253	6.59710893868
+6	Prevotella_denticola_F0289_uid65091	4.42671781981
+7	Bacteroides_fragilis_638R_uid84217	4.27881060106
+8	Eubacterium_siraeum_V10Sc8a_uid197178	3.42323728348
+9	Parabacteroides_distasonis_ATCC_8503_uid58301	3.00810957398
+10	Alistipes_finegoldii_DSM_17242_uid168180	2.51926524262
+11	Chitinophaga_pinensis_DSM_2588_uid59113	2.04409920634
+12	Mahella_australiensis_50_1_BON_uid66917	1.91722582299
+13	Cenarchaeum_symbiosum_A_uid61411	1.89285520872
+14	Prevotella_intermedia_17_uid163151	1.69865846183
+15	Faecalibacterium_prausnitzii_uid197157	1.66073709429
+16	Thermocrinis_albus_DSM_14484_uid46231	1.48830645646
+17	Desulfurococcus_fermentans_DSM_16532_uid75119	1.30994756082
+18	Treponema_brennaborense_DSM_12168_uid66607	1.25593593996
+19	Anaplasma_centrale_Israel_uid42155	1.12299034792
+20	Spirochaeta_africana_DSM_8902_uid81779	1.06189465851
+-	Others (abundance < 1%)	5.98
+
