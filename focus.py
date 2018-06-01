@@ -296,6 +296,8 @@ else:
                 level="Genus Level"
             elif level==6:
                 level="Species Level"
+            elif level==7:
+                level="Strain Level"
                 
 
             #prints the results in a readable format
@@ -424,7 +426,7 @@ else:
                     weights=normalise(nnls(db,data)[0])
 
                     c=6
-                    for i in xrange(7):
+                    for i in xrange(8):
                         labels,fracs,level=GetResults(i,organisms,weights)
                         print str(c)+") Printed the results for the "+level+"\n"
                         c+=1
