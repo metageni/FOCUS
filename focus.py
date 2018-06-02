@@ -4,11 +4,12 @@
 from numpy import array,linspace,zeros,eye,concatenate,sum as SUM,linalg
 from scipy.optimize import nnls
 import os,sys,random
+import traceback
 
 ##############################
 #  Program Defaults parameters#
 ##############################
-parameters={"-k":"7","-q":"","-m":"1","-d":"","dir":"","-s":"0","-l":"all"}
+parameters={"-k":"7","-q":"","-m":"1","-d":"","-b":"","dir":"","-s":"0","-l":"all"}
 # [-q] metagenome sequence files in FASTA format  or directory (multi-samples; please set -s 1)
 # [-k] k-mer choice
 # [-m] minimum abundance percent
@@ -27,6 +28,7 @@ usage="FOCUS: An Alignment-Free Model To Identify Organisms In Metagenomes Using
        "   -m minimum relative abundance to show in the results (default: 1%)\n"\
        "      Cut-off for the showing results.\n   -d Insert your own data into the database\n"\
        "      more information README .\n"\
+       "   -b alternate directory for your databases. You will need k6, k7, or k8 depending on k-mer size\n"\
        "   -l Split STAMP output in different levels (default: all; options: kingdom, phylum, class, order, family, genus, or species)\n"\
        "---------------------------------------------------------------------------------------------------------------------------------\n"\
        "example 1 > (single file) python focus.py -q query.fasta\n"\
@@ -37,8 +39,6 @@ usage="FOCUS: An Alignment-Free Model To Identify Organisms In Metagenomes Using
 #Read and save the parameters given by the user       #
 #######################################################
 def setParameters():
-    if "/" in sys.argv[0]:
-        parameters["dir"]="/".join(sys.argv[0].split("/")[:-1])+"/"
     userParameters=sys.argv[1:]
     for i in range(0,len(userParameters),2):
         try:
@@ -49,6 +49,11 @@ def setParameters():
             else:
                 if "-h" not in userParameters:
                     print userParameters[i]+" is not a valid parameter"
+    
+    if parameters["-b"]:
+        parameters["dir"]=parameters["-b"]
+    elif "/" in sys.argv[0]:
+        parameters["dir"]="/".join(sys.argv[0].split("/")[:-1])+"/"
 
     if os.path.isdir(parameters["-q"]):
         parameters["-s"]='1'
@@ -174,7 +179,9 @@ elif parameters["-d"]!="":
                 print line[0]+" - "+k+"-mer (done)"
                 
         f.close()
-    except:
+    except Exception as e:
+        print(e)
+        print(traceback.format_exc())
         print usage
 
 ###check if the query exists or if it is adding genome to the db
@@ -243,11 +250,17 @@ else:
         #Loads the Database selected by the user              #
         #######################################################
         def loadDB():
+            if not os.path.exists(parameters["dir"]+"db/k"+parameters["-k"]):
+                sys.stderr.write("ERROR: Database " +parameters["dir"]+"db/k"+parameters["-k"] + " was not found. Did you extract db.zip?\n")
+                sys.exit()
             db=open(parameters["dir"]+"db/k"+parameters["-k"])
             db.readline()
             h={}
             for line in db:
                 line=line.split("\t")
+                if '0' in line[9] and SUM(array(line[8:], dtype='i')) == 0:
+                    sys.stderr.write("There are no kmers found for " + "\t".join(line[:8]) + "\n")
+                    continue
                 h["\t".join(line[:8])]=normalise(array(line[8:], dtype='i'))#array([int(x) for x in line[8:]])
             db.close()
             
@@ -283,6 +296,8 @@ else:
                 level="Genus Level"
             elif level==6:
                 level="Species Level"
+            elif level==7:
+                level="Strain Level"
                 
 
             #prints the results in a readable format
@@ -411,7 +426,7 @@ else:
                     weights=normalise(nnls(db,data)[0])
 
                     c=6
-                    for i in xrange(7):
+                    for i in xrange(8):
                         labels,fracs,level=GetResults(i,organisms,weights)
                         print str(c)+") Printed the results for the "+level+"\n"
                         c+=1
@@ -427,5 +442,7 @@ else:
                     o.close()
                     
         main() 
-    except:
+    except Exception as e:
+        print(e)
+        print(traceback.format_exc())
         print usage
