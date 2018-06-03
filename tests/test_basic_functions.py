@@ -31,7 +31,21 @@ def test_is_wanted_file():
 
 
 def test_count_kmers():
-    pass
+    query_file = "tests/data/mock_sample.fasta"
+    threads = "1"
+
+    kmer_size = "6"
+    kmer_order = ["AAAAAA", "AAAAAT", "TTTTTT"]
+    assert count_kmers(query_file, kmer_size, threads, kmer_order) == [19, 3, 0]
+
+    kmer_size = "7"
+    kmer_order = ["AAAAAAA", "AAAGAAT", "ATTTTTT"]
+    assert count_kmers(query_file, kmer_size, threads, kmer_order) == [17, 0, 0]
+
+    query_file = "tests/data/mock_sample_empty.fasta"
+    kmer_size = "6"
+    kmer_order = ["AAAAAA", "AAAAAT", "TTTTTT"]
+    assert count_kmers (query_file, kmer_size, threads, kmer_order) == [0, 0, 0]
 
 
 def test_write_results():

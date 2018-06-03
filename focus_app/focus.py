@@ -27,7 +27,7 @@ def normalise(raw_counts):
     """Normalise raw counts into proportions.
 
     Args:
-        raw_counts (numpy.ndarray): array with raw count
+        raw_counts (numpy.ndarray): Array with raw count
 
     Returns:
         numpy.ndarray: Normalised data
@@ -53,13 +53,13 @@ def is_wanted_file(queries):
 
 
 def which(program_name):
-    """python implementation of which function.
+    """python implementation of unix 'which' function.
 
     Args:
-        program_name (str): program name
+        program_name (str): Program name
 
     Returns:
-        str: program path
+        str: Program path
 
     """
     def is_exe(fpath):
@@ -86,7 +86,7 @@ def load_database(database_path):
         database_path (PosixPath): Path to database
 
     Returns:
-        numpy.ndarray: matrix with loaded database
+        numpy.ndarray: mMtrix with loaded database
         list: List of organisms in the database
         list: K-mer database order
 
@@ -117,7 +117,7 @@ def count_kmers(query_file, kmer_size, threads, kmer_order):
         kmer_order (list): List with k-mers database order
 
     Returns:
-        numpy.ndarray: normalised k-mer counts
+        numpy.ndarray: K-mer counts
 
     """
     suffix = str(random.random())
@@ -140,7 +140,7 @@ def count_kmers(query_file, kmer_size, threads, kmer_order):
         # delete dump file
         os.system("rm {}".format(output_dump))
 
-        return normalise([counts[kmer_temp] for kmer_temp in kmer_order])
+        return [counts[kmer_temp] for kmer_temp in kmer_order]
 
 
 def write_results(results, output_directory, query_files, taxonomy_level):
@@ -155,7 +155,6 @@ def write_results(results, output_directory, query_files, taxonomy_level):
      """
     with open(output_directory, 'w') as outfile:
         writer = csv.writer(outfile, delimiter='\t', lineterminator='\n')
-
         writer.writerow(taxonomy_level + [targeted_file.split("/")[0] for targeted_file in query_files])
 
         for taxa in results:
@@ -267,7 +266,7 @@ def main():
 
             LOGGER.info("   Counting k-mers")
             # count k-mers
-            query_count = count_kmers(Path(query, temp_query), kmer_size, threads, kmer_order)
+            query_count = normalise(count_kmers(Path(query, temp_query), kmer_size, threads, kmer_order))
             # find the best set of organisms that reconstruct the user metagenome using NNLS
             LOGGER.info("   Running FOCUS")
             organisms_abundance = run_nnls(database_matrix, query_count)
