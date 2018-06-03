@@ -44,13 +44,14 @@ def load_database(database_path):
 
     Returns:
         numpy.ndarray: matrix with loaded database
-        list: list of organisms in the database
+        list: List of organisms in the database
+        list: K-mer database order
 
     """
     database_results = {}
     with open(database_path) as database_file:
         database_reader = csv.reader(database_file, delimiter='\t')
-        next(database_reader, None)
+        kmer_order = next(database_reader, None)[8:]
         for row in database_reader:
             if '0' in row[9] and numpy_sum(array(row[8:], dtype='i')) == 0:
                 sys.stderr.write("There are no kmers found for " + "\t".join(row[:8]))
@@ -60,35 +61,43 @@ def load_database(database_path):
     organisms = list(database_results.keys())
     database_results = array([database_results[organism] for organism in organisms])
 
-    return database_results.T, organisms
+    return database_results.T, organisms, kmer_order
 
 
-def count_kmers(kmer_size, method="jellyfish"):
+def count_kmers(query_file, kmer_size, threads, kmer_order):
     """Count k-mers on FAST(A/Q) file.
 
     Args:
-        kmer_size (str): k-mer size
-        method (str): software to count k-mers
+        query_file (PosixPath): Query in FAST(A/Q) file
+        kmer_size (str): K-mer size
+        threads (str): Number of threads to use in the k-mer counting
+        kmer_order (list): List with k-mers database order
 
     Returns:
-        numpy.ndarray: raw count of k-mers
+        numpy.ndarray: normalised k-mer counts
 
     """
-    pass
+    suffix = str(random.random())
+    output_count = Path("kmer_counting_{}".format(suffix))
+    output_dump = Path("kmer_dump_{}".format(suffix))
 
+    # count and dump kmers counts
+    os.system("jellyfish count -m {} -o {} -s 100M -t {} -C --disk {}".format(kmer_size, output_count, threads, query_file))
+    os.system("jellyfish dump {} -c > {}".format(output_count, output_dump))
+    # delete binary counts
+    os.system("rm {}".format(output_count))
 
-def count_kmers_fake(kmer_size, method="jellyfish"):
-    """Count k-mers on FAST(A/Q) file.
+    if output_dump.exists():
+        counts = defaultdict(int)
+        with open(output_dump) as counts_file:
+            counts_reader = csv.reader(counts_file, delimiter=' ')
+            for kmer, count in counts_reader:
+                counts[kmer] = int(count)
 
-    Args:
-        kmer_size (str): k-mer size
-        method (str): software to count k-mers
+        # delete dump file
+        os.system("rm {}".format(output_dump))
 
-    Returns:
-        numpy.ndarray: raw count of k-mers
-
-    """
-    return normalise([random.randint(10000, 200000) for _ in range(2080)])
+        return normalise([counts[kmer_temp] for kmer_temp in kmer_order])
 
 
 def write_results(results, output_directory, query_files, taxonomy_level):
@@ -136,8 +145,8 @@ def run_nnls(database_matrix, query_count):
     """Run Non-negative least squares (NNLS) algorithm.
 
     Args:
-        database_matrix (numpy.ndarray): Matrix with count for organisms in the database
-        query_count (numpy.ndarray): Metagenome k-mer count
+        database_matrix (ndarray): Matrix with count for organisms in the database
+        query_count (ndarray): Metagenome k-mer count
 
     Returns:
         numpy.ndarray: Abundances of each organism
@@ -154,6 +163,7 @@ def main():
     parser.add_argument("-d", "--work_directory",  help="Work directory", default="focus_app")
     parser.add_argument("-b", "--alternate_directory",  help="Alternate directory for your databases", default="")
     parser.add_argument("-p", "--output_prefix",  help="Output prefix", default="output")
+    parser.add_argument("-t", "--threads",  help="Number Threads used in the k-mer counting", default="4")
 
     args = parser.parse_args()
 
@@ -163,6 +173,7 @@ def main():
     kmer_size = args.kmer_size
     WORK_DIRECTORY = Path(args.alternate_directory) if args.alternate_directory else Path(args.work_directory)
     database_path = Path(WORK_DIRECTORY, "db/k" + kmer_size)
+    threads = args.threads
 
     # check if query is exists
     if not query.exists():
@@ -189,7 +200,7 @@ def main():
         LOGGER.info("FOCUS: An Agile Profiler for Metagenomic Data")
         LOGGER.info("1) Loading Reference DB")
         database_path = Path(WORK_DIRECTORY, "db/k" + kmer_size)
-        database_matrix, organisms = load_database(database_path)
+        database_matrix, organisms, kmer_order = load_database(database_path)
 
         LOGGER.info("2) Reference DB was loaded with {} reference genomes".format(len(organisms)))
         # get fasta/fastq files
@@ -203,7 +214,8 @@ def main():
             LOGGER.info("3.{}) Working on: {}".format(counter, temp_query))
 
             LOGGER.info("   Counting k-mers")
-            query_count = count_kmers_fake(kmer_size)
+            # count k-mers
+            query_count = count_kmers(temp_query, kmer_size, threads, kmer_order)
             # find the best set of organisms that reconstruct the user metagenome using NNLS
             LOGGER.info("   Running FOCUS")
             organisms_abundance = run_nnls(database_matrix, query_count)
