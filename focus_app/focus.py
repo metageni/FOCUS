@@ -36,6 +36,49 @@ def normalise(raw_counts):
     return raw_counts / (numpy_sum(raw_counts) * 1.)
 
 
+def is_wanted_file(queries):
+    """Remove files from query files that not have extension .fasta/.fastq/.fna
+
+    Args:
+        queries (list): List with query names
+
+    Returns:
+        list: sorted list with only .fasta/.fastq/.fna files
+
+    """
+    queries = [query for query in queries if query.split(".")[-1].lower () in ["fna", "fasta", "fastq"]]
+    queries.sort()
+
+    return queries
+
+
+def which(program_name):
+    """python implementation of which function.
+
+    Args:
+        program_name (str): program name
+
+    Returns:
+        str: program path
+
+    """
+    def is_exe(fpath):
+        return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
+
+    fpath, fname = os.path.split(program_name)
+    if fpath:
+        if is_exe(program_name):
+            return program_name
+    else:
+        for path in os.environ["PATH"].split(os.pathsep):
+            path = path.strip('"')
+            exe_file = os.path.join(path, program_name)
+            if is_exe(exe_file):
+                return exe_file
+
+    return None
+
+
 def load_database(database_path):
     """Load database.
 
@@ -113,7 +156,7 @@ def write_results(results, output_directory, query_files, taxonomy_level):
     with open(output_directory, 'w') as outfile:
         writer = csv.writer(outfile, delimiter='\t', lineterminator='\n')
 
-        writer.writerow(taxonomy_level + [targeted_file for targeted_file in query_files])
+        writer.writerow(taxonomy_level + [targeted_file.split("/")[0] for targeted_file in query_files])
 
         for taxa in results:
             if sum(results[taxa]) > 0:
@@ -168,6 +211,7 @@ def main():
 
     args = parser.parse_args()
 
+    # parameters and other variables
     query = Path(args.query)
     prefix = args.output_prefix
     output_directory = Path(args.output_directory)
@@ -175,10 +219,19 @@ def main():
     WORK_DIRECTORY = Path(args.alternate_directory) if args.alternate_directory else Path(args.work_directory)
     database_path = Path(WORK_DIRECTORY, "db/k" + kmer_size)
     threads = args.threads
+    jellyfish_path = which("jellyfish")
+
+    # check if k-mer counter is installed
+    if not jellyfish_path:
+        LOGGER.critical("K-MER COUNTER: Jellyfish is not installed.".format(query))
 
     # check if query is exists
-    if not query.exists():
+    elif not query.exists():
         LOGGER.critical("QUERY: {} does not exist".format(query))
+
+    # check if at least one of the queries is valid
+    if is_wanted_file(os.listdir(query)) == []:
+        LOGGER.critical("QUERY: {} does not have any Fasta/Fna/Fastq file".format (query))
 
     # check if output_directory is exists
     elif not output_directory.exists():
@@ -205,18 +258,16 @@ def main():
 
         LOGGER.info("2) Reference DB was loaded with {} reference genomes".format(len(organisms)))
         # get fasta/fastq files
-        query_files = [query] if query.is_file() else [temp_query for temp_query in os.listdir(query)]
-        query_files.sort()
+        query_files = is_wanted_file([query] if query.is_file() else [temp_query for temp_query in os.listdir(query)])
 
         results = {taxa: [0] * len(query_files) for taxa in organisms}
 
-        counter = 1
-        for temp_query in query_files:
-            LOGGER.info("3.{}) Working on: {}".format(counter, temp_query))
+        for counter, temp_query in enumerate(query_files):
+            LOGGER.info("3.{}) Working on: {}".format(counter + 1, temp_query))
 
             LOGGER.info("   Counting k-mers")
             # count k-mers
-            query_count = count_kmers(temp_query, kmer_size, threads, kmer_order)
+            query_count = count_kmers(Path(query, temp_query), kmer_size, threads, kmer_order)
             # find the best set of organisms that reconstruct the user metagenome using NNLS
             LOGGER.info("   Running FOCUS")
             organisms_abundance = run_nnls(database_matrix, query_count)
@@ -225,8 +276,6 @@ def main():
             query_index = query_files.index(temp_query)
             for pos in range(len(organisms)):
                 results[organisms[pos]][query_index] = organisms_abundance[pos]
-
-            counter += 1
 
         LOGGER.info('5) Writing Results to {}'.format(output_directory))
         taxomy_levels = ["Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Strain"]
@@ -242,7 +291,7 @@ def main():
             output_file = Path(output_directory, prefix + "_" + level + "_tabular.xls")
             write_results(level_result, output_file, query_files, [level])
 
-    LOGGER.info('6) Done'.format(output_directory))
+    LOGGER.info('Done'.format(output_directory))
 
 
 if __name__ == "__main__":
