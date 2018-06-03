@@ -5,7 +5,7 @@
 
 #### (!) IMPORTANT
 -----
-- If you are using FOCUS cloned from github, please uncompress `db.zip` file
+- If you are using FOCUS cloned from github, please uncompress `db.zip` file inside `focus_app`
 - FOCUS  before tool rewrite can be found [here](https://github.com/metageni/FOCUS/archive/0.31.zip)
 
 #### (1) Usage

@@ -86,7 +86,7 @@ def load_database(database_path):
         database_path (PosixPath): Path to database
 
     Returns:
-        numpy.ndarray: mMtrix with loaded database
+        numpy.ndarray: Matrix with loaded database
         list: List of organisms in the database
         list: K-mer database order
 
