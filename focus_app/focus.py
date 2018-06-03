@@ -156,14 +156,15 @@ def run_nnls(database_matrix, query_count):
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description="FOCUS: An Agile Profiler for Metagenomic Data",
+                                     epilog= "example > (multiple files) python focus.py -q samples directory")
     parser.add_argument("-q", "--query", help="Path to FAST(A/Q) file or directory with these files", required=True)
     parser.add_argument("-o", "--output_directory",  help="Path to output files", required=True)
-    parser.add_argument("-k", "--kmer_size",  help="K-mer size (6 or 7)", default="6")
-    parser.add_argument("-d", "--work_directory",  help="Work directory", default="focus_app")
+    parser.add_argument("-k", "--kmer_size",  help="K-mer size (6 or 7) (Default: 6)", default="6")
+    parser.add_argument("-d", "--work_directory",  help="Work directory (Default: focus_app)", default="focus_app")
     parser.add_argument("-b", "--alternate_directory",  help="Alternate directory for your databases", default="")
-    parser.add_argument("-p", "--output_prefix",  help="Output prefix", default="output")
-    parser.add_argument("-t", "--threads",  help="Number Threads used in the k-mer counting", default="4")
+    parser.add_argument("-p", "--output_prefix",  help="Output prefix (Default: output)", default="output")
+    parser.add_argument("-t", "--threads",  help="Number Threads used in the k-mer counting (Default: 4)", default="4")
 
     args = parser.parse_args()
 
