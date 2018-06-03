@@ -1,85 +1,30 @@
-#FOCUS
-An Alignment-Free Model To Identify Organisms In Metagenomes Using Non-Negative Least Squares 
-version: 0.31
------
+### FOCUS: An Agile Profiler for Metagenomic Data v 1.0
 
-(c)            Silva, G. G. Z., D. A. Cuevas, B. E. Dutilh, and R. A. Edwards, 2014: FOCUS: an alignment-free model
-			   to identify organisms in metagenomes using non-negative least squares. PeerJ, 2, e425,doi:10.7717/peerj.425.
-website: 	   http://edwards.sdsu.edu/FOCUS
+(c) Silva, G. G. Z., D. A. Cuevas, B. E. Dutilh, and R. A. Edwards, 2014: [FOCUS: an alignment-free model to identify organisms in metagenomes using non-negative least squares. PeerJ.](https://peerj.com/articles/425)
 
 
-(!) IMPORTANT
------
-If you are using FOCUS cloned from github, please uncompress "db.zip" file.
+#### (!) IMPORTANT
+- If you are using FOCUS cloned from github, please uncompress `db.zip` file inside `focus_app`
+- FOCUS  before tool rewrite can be found [here](https://github.com/metageni/FOCUS/archive/0.31.zip)
 
-(1) USAGE
------
-python focus.py -q query_sequence.fna [-k] [-m]
+#### (1) Usage
+	python focus.py -q INPUT -k -o OUTPUT_DIR
 
-	-q Specify input file. 
-		Required: Input files should be in FASTA/FASTQ format. 
+		-q Path to FASTA/FASTQ file or directory with these files
 
-	-k Specify k-mer frequency used on the profile (default: 7)
-		6,7 and 8 frequencies are available. 
-	
-	-m minimum relative abundance to show in the results (default: 1%)
-	
-	-l Split STAMP output in different levels (default: all; options: kingdom, phylum, class, order, family, genus, or species)
+		-o Path to output directory
 
-	
-(2) ADDING DATA INTO THE DATABASE
------
-In order to insert data into the FOCUS database, you have to run focus only with -d parameter
-	For example, python focus.py -d myGenomicData
+		-k K-mer size (6 or 7 avaliable) (Default: 6)
 
-	The genomic files has to be in the following format having 9 tabulated(\t) fields:
-	 1. File location: You fasta/fastq file location
-	 2-9.For your organisms: Kingdom, phylum, class, order, family, genus, species, and strain
-	 
-(3) OUTPUT
-
-Single file:
----------------------------------------------------------------------------------------------------------------
-- FOCUS prints the output after it finishes the running, and it also write a tabular file (YOURQUERY__output.txt)
-
-Multiple files:
----------------------------------------------------------------------------------------------------------------
-- FOCUS also run the program and generate a tabular output comparing all the samples. This output can be used
-as STAMP's input for statistical analysis.
-
-- Split STAMP output in different levels by setting -l to the wanted level 
-  (default: all; options: kingdom, phylum, class, order, family, genus, or species)
-
-For further info please visit the FOCUS website at http://edwards.sdsu.edu/FOCUS
+    	-p Ouput prefix (Default: output)
 
 
-(4) DEPENDENCIES
-------------
-- Python >= 2.7.X and 3.0: http://www.python.org/download
-- Jellyfish: http://www.cbcb.umd.edu/software/jellyfish
-- Numpy: http://sourceforge.net/projects/numpy/files/NumPy
-- SciPy: http://sourceforge.net/projects/scipy
-
-#FOCUS Confidence Interval
-We have added to FOCUS the option to compute the confindence interval for each of the taxa predicted by FOCUS.
-
-	Use "focus_confidence_interval.py" for the confidence interval option. It will resample your query [-q] with 50% [-p] (default) 1000 times [-r] (default)
-	Example command line: python focus_confidence_interval.py -q sequences.fasta -p 50 -r 1000
-	Output: Folder "resample_result"
+#### (2) Output
+FOCUS generates a tabular output per taxonomic level (`Kingdom`, `Phylum`, `Class`, `Order`, `Family`, `Genus`, `Species`, and `Strain`) and one with all levels which can be used as [STAMP](http://kiwi.cs.dal.ca/Software/STAMP)'s input for statistical analysis.
 
 
-COPYRIGHT AND LICENSE
----------------------
-Copyright (C) 2013-2015  Genivaldo Gueiros Z. Silva
-
-This program is free software: you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free Software
-Foundation, either version 3 of the License, or (at your option) any later
-version.
-
-This program is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with
-this program.  If not, see <http://www.gnu.org/licenses/>.
+#### (3) Dependencies
+- [Python 3.XX](http://www.python.org/download)
+- [Jellyfish 2.2.6](https://anaconda.org/conda-forge/jellyfish)
+- [Numpy](https://github.com/numpy/numpy)
+- [SciPy](https://github.com/scipy/scipy)
