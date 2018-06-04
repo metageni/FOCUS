@@ -1,5 +1,4 @@
-### FOCUS: An Agile Profiler for Metagenomic Data v 1.0
-
+### FOCUS: An Agile Profiler for Metagenomic Data
 (c) Silva, G. G. Z., D. A. Cuevas, B. E. Dutilh, and R. A. Edwards, 2014: [FOCUS: an alignment-free model to identify organisms in metagenomes using non-negative least squares. PeerJ.](https://peerj.com/articles/425)
 
 
