@@ -237,7 +237,11 @@ def main():
         LOGGER.info("OUTPUT: {} does not exist - just created it :)".format(output_directory))
 
     # check if at least one of the queries is valid
-    if is_wanted_file(os.listdir(query)) == []:
+    if not query.is_dir():
+        LOGGER.critical("QUERY: {} is not a directory".format(query))
+
+    # check if at least one of the queries is valid
+    elif is_wanted_file(os.listdir(query)) == []:
         LOGGER.critical("QUERY: {} does not have any Fasta/Fna/Fastq file".format(query))
 
     # check if k-mer counter is installed
@@ -268,7 +272,7 @@ def main():
 
         LOGGER.info("2) Reference DB was loaded with {} reference genomes".format(len(organisms)))
         # get fasta/fastq files
-        query_files = is_wanted_file([query] if query.is_file() else [temp_query for temp_query in os.listdir(query)])
+        query_files = is_wanted_file([temp_query for temp_query in os.listdir(query)])
 
         results = {taxa: [0] * len(query_files) for taxa in organisms}
 

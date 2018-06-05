@@ -7,9 +7,9 @@
 - FOCUS  before tool rewrite can be found [here](https://github.com/metageni/FOCUS/archive/0.31.zip)
 
 #### (1) Usage
-	python focus.py -q INPUT -k -o OUTPUT_DIR
+	python focus.py -q INPUT_DIR -k -o OUTPUT_DIR
 
-		-q Path to FASTA/FASTQ file or directory with these files
+		-q Path to directory with FASTA/FASTQ file(s)
 
 		-o Path to output directory
 
