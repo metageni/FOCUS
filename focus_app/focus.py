@@ -6,7 +6,6 @@ import csv
 import logging
 import os
 import random
-import sys
 
 from pathlib import Path
 from collections import defaultdict
@@ -33,7 +32,11 @@ def normalise(raw_counts):
         numpy.ndarray: Normalised data
 
     """
-    return raw_counts / (numpy_sum(raw_counts) * 1.)
+    sum_values = numpy_sum(raw_counts)
+
+    if not sum_values:
+        raise RuntimeWarning('All values in input are 0.')
+    return raw_counts / sum_values
 
 
 def is_wanted_file(queries):
@@ -46,7 +49,7 @@ def is_wanted_file(queries):
         list: sorted list with only .fasta/.fastq/.fna files
 
     """
-    queries = [query for query in queries if query.split(".")[-1].lower () in ["fna", "fasta", "fastq"]]
+    queries = [query for query in queries if query.split(".")[-1].lower() in ["fna", "fasta", "fastq"]]
     queries.sort()
 
     return queries
@@ -96,9 +99,7 @@ def load_database(database_path):
         database_reader = csv.reader(database_file, delimiter='\t')
         kmer_order = next(database_reader, None)[8:]
         for row in database_reader:
-            if '0' in row[9] and numpy_sum(array(row[8:], dtype='i')) == 0:
-                sys.stderr.write("There are no kmers found for " + "\t".join(row[:8]))
-                continue
+            # if k-mers are all 0, normalise will raise an expection
             database_results["\t".join(row[:8])] = normalise(array(row[8:], dtype='i'))
 
     organisms = list(database_results.keys())
@@ -155,7 +156,7 @@ def write_results(results, output_directory, query_files, taxonomy_level):
      """
     with open(output_directory, 'w') as outfile:
         writer = csv.writer(outfile, delimiter='\t', lineterminator='\n')
-        writer.writerow(taxonomy_level + [targeted_file.split("/")[0] for targeted_file in query_files])
+        writer.writerow(taxonomy_level + [Path(targeted_file).parts[-1] for targeted_file in query_files])
 
         for taxa in results:
             if sum(results[taxa]) > 0:
@@ -220,21 +221,24 @@ def main():
     threads = args.threads
     jellyfish_path = which("jellyfish")
 
+    LOGGER.info ("FOCUS: An Agile Profiler for Metagenomic Data")
+
+    # check if output_directory is exists - if not, creates it
+    if not output_directory.exists():
+        Path(output_directory).mkdir(parents=True, mode=511)
+        LOGGER.info("OUTPUT: {} does not exist - just created it :)".format(output_directory))
+
+    # check if at least one of the queries is valid
+    if is_wanted_file(os.listdir(query)) == []:
+        LOGGER.critical("QUERY: {} does not have any Fasta/Fna/Fastq file".format(query))
+
     # check if k-mer counter is installed
-    if not jellyfish_path:
+    elif not jellyfish_path:
         LOGGER.critical("K-MER COUNTER: Jellyfish is not installed.".format(query))
 
     # check if query is exists
     elif not query.exists():
         LOGGER.critical("QUERY: {} does not exist".format(query))
-
-    # check if at least one of the queries is valid
-    if is_wanted_file(os.listdir(query)) == []:
-        LOGGER.critical("QUERY: {} does not have any Fasta/Fna/Fastq file".format (query))
-
-    # check if output_directory is exists
-    elif not output_directory.exists():
-        LOGGER.critical("OUTPUT: {} does not exist".format(output_directory))
 
     # check if database exists
     elif not database_path.exists():
@@ -250,7 +254,6 @@ def main():
                         "please choose 6 or 7".format(kmer_size))
 
     else:
-        LOGGER.info("FOCUS: An Agile Profiler for Metagenomic Data")
         LOGGER.info("1) Loading Reference DB")
         database_path = Path(WORK_DIRECTORY, "db/k" + kmer_size)
         database_matrix, organisms, kmer_order = load_database(database_path)

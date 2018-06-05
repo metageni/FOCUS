@@ -1,13 +1,20 @@
 # -*- coding: utf-8 -*-
 
+from focus_app.focus import normalise, load_database, is_wanted_file, count_kmers, which, load_database
+
+import pytest
+
 from numpy import array
 
-from focus_app.focus import normalise, load_database, is_wanted_file, count_kmers, which
 
 
 def test_normalise():
     assert list(normalise(array([1, 1,]))) == [0.5, 0.5]
     assert list(normalise(array([2, 2, 2, 2]))) == [0.25, 0.25, 0.25, 0.25]
+
+    # bad input
+    with pytest.raises (RuntimeWarning):
+        normalise([0, 0, 0])
 
 
 def test_load_database():
@@ -31,7 +38,7 @@ def test_is_wanted_file():
 
 
 def test_count_kmers():
-    if which ("jellyfish"):
+    if which("jellyfish"):
         query_file = "tests/data/mock_sample.fasta"
         threads = "1"
 
@@ -49,5 +56,18 @@ def test_count_kmers():
         assert count_kmers (query_file, kmer_size, threads, kmer_order) == [0, 0, 0]
 
 
+def test_load_database():
+    pass
+
+    # bad database with all keys 0 in row = raise error
+
 def test_write_results():
+    pass
+
+
+def test_aggregate_level():
+    pass
+
+
+def test_run_nnls():
     pass
