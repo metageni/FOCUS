@@ -81,49 +81,80 @@ def test_run_nnls():
 
 
 def test_aggregate_level():
-
-    true_answer = [
-        {'Bacteria': [0.54337724854388625, 0.76762773844686816,
-                      0.68899501300924559]},
-        {'Spirochaetes': [0.26407041877834087, 0.38383568951720459,
-                          0.35209389170445454], 'Firmicutes': [0.27930682976554538,
-                                                               0.38379204892966362, 0.33690112130479105]},
-        {'Spirochaetia': [0.26407041877834087, 0.38383568951720459,
-                          0.35209389170445454], 'Bacilli': [0.27930682976554538,
-                                                            0.38379204892966362, 0.33690112130479105]},
-        {'Spirochaetales': [0.26407041877834087, 0.38383568951720459,
-                            0.35209389170445454], 'Lactobacillales': [0.27930682976554538,
-                                                                      0.38379204892966362, 0.33690112130479105]},
-        {'Spirochaetaceae': [0.26407041877834087, 0.38383568951720459,
-                             0.35209389170445454], 'Streptococcaceae': [0.27930682976554538,
-                                                                        0.38379204892966362, 0.33690112130479105]},
-        {'Sphaerochaeta': [0.26407041877834087, 0.38383568951720459,
-                           0.35209389170445454], 'Streptococcus': [0.27930682976554538,
-                                                                   0.38379204892966362, 0.33690112130479105]},
-        {'Sphaerochaeta_pleomorpha': [0.26407041877834087,
-                                      0.38383568951720459, 0.35209389170445454],
-         'Streptococcus_suis': [0.27930682976554538, 0.38379204892966362,
-                                0.33690112130479105]},
-        {'Sphaerochaeta_pleomorpha_Grapes_uid82365': [0.26407041877834087,
-                                                      0.38383568951720459, 0.35209389170445454],
-         'Streptococcus_suis_98HAH33_uid58665': [0.27930682976554538,
-                                                 0.38379204892966362, 0.33690112130479105]},
-    ]
+    # load database
     database_matrix, organisms, kmer_order = load_database ("tests/data/k6_small_sample.txt")
-    results = {organisms[pos]: profile for pos, profile in enumerate(database_matrix.T)}
 
-    producted_result = []
+    # test 1
+    random.seed (500)
 
-    # runs aggregate function in all the levels
+    true_answer_1 = [
+        {'Bacteria': 0.99999999999999989},
+        {'Spirochaetes': 0.40650798820847034,
+         'Firmicutes': 0.59349201179152955},
+        {'Spirochaetia': 0.40650798820847034,
+         'Bacilli': 0.59349201179152955},
+        {'Spirochaetales': 0.40650798820847034,
+         'Lactobacillales': 0.59349201179152955},
+        {'Spirochaetaceae': 0.40650798820847034,
+         'Streptococcaceae': 0.59349201179152955},
+        {'Sphaerochaeta': 0.40650798820847034,
+         'Streptococcus': 0.59349201179152955},
+        {'Sphaerochaeta_pleomorpha': 0.40650798820847034,
+         'Streptococcus_suis': 0.59349201179152955},
+        {'Sphaerochaeta_pleomorpha_Grapes_uid82365': 0.40650798820847034,
+         'Streptococcus_suis_98HAH33_uid58665': 0.59349201179152955},
+    ]
+
+
+
+    # fake metagenomic count
+    fake_query_count = normalise ([random.randint (10000, 200000) for _ in range (3)])
+    # run nnls
+    organisms_abundance = run_nnls (database_matrix, fake_query_count)
+
+    results = {organisms[pos]: organisms_abundance[pos] for pos, profile in enumerate (organisms_abundance)}
+
+    assert_result = []
     for pos in range(8):
-        aggregate_results = aggregate_level(results, pos)
+        aggregate_results = aggregate_level (results, pos)
+        assert_result.append (aggregate_results)
 
-        # convert results to list rather the numpy.array
-        aggregate_results_list = {level:list(aggregate_results[level]) for level in aggregate_results}
+    assert assert_result == true_answer_1
 
-        producted_result.append(aggregate_results_list)
+    # test 2
+    random.seed (1128)
 
-    assert producted_result == true_answer
+    true_answer_2 = [
+        {'Bacteria': 1.0},
+        {'Spirochaetes': 0.11743935706399153,
+         'Firmicutes': 0.88256064293600844},
+        {'Spirochaetia': 0.11743935706399153,
+         'Bacilli': 0.88256064293600844},
+        {'Spirochaetales': 0.11743935706399153,
+         'Lactobacillales': 0.88256064293600844},
+        {'Spirochaetaceae': 0.11743935706399153,
+         'Streptococcaceae': 0.88256064293600844},
+        {'Sphaerochaeta': 0.11743935706399153,
+         'Streptococcus': 0.88256064293600844},
+        {'Sphaerochaeta_pleomorpha': 0.11743935706399153,
+         'Streptococcus_suis': 0.88256064293600844},
+        {'Sphaerochaeta_pleomorpha_Grapes_uid82365': 0.11743935706399153,
+         'Streptococcus_suis_98HAH33_uid58665': 0.88256064293600844},
+    ]
+
+    # fake metagenomic count
+    fake_query_count = normalise ([random.randint (10000, 200000) for _ in range (3)])
+    # run nnls
+    organisms_abundance = run_nnls (database_matrix, fake_query_count)
+
+    results = {organisms[pos]: organisms_abundance[pos] for pos, profile in enumerate (organisms_abundance)}
+
+    assert_result = []
+    for pos in range (8):
+        aggregate_results = aggregate_level (results, pos)
+        assert_result.append (aggregate_results)
+
+    assert assert_result == true_answer_2
 
 
 def test_write_results():
