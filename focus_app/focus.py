@@ -132,16 +132,24 @@ def count_kmers(query_file, kmer_size, threads, kmer_order):
     os.system("rm {}".format(output_count))
 
     if output_dump.exists():
-        counts = defaultdict(int)
-        with open(output_dump) as counts_file:
-            counts_reader = csv.reader(counts_file, delimiter=' ')
-            for kmer, count in counts_reader:
-                counts[kmer] = int(count)
+        # not empty file
+        if output_dump.stat().st_size:
+            counts = defaultdict(int)
+            with open(output_dump) as counts_file:
+                counts_reader = csv.reader(counts_file, delimiter=' ')
+                for kmer, count in counts_reader:
+                    counts[kmer] = int(count)
+            # delete dump file
+            os.system("rm {}".format(output_dump))
 
-        # delete dump file
-        os.system("rm {}".format(output_dump))
+            return [counts[kmer_temp] for kmer_temp in kmer_order]
 
-        return [counts[kmer_temp] for kmer_temp in kmer_order]
+        else:
+            os.system("rm {}".format(output_dump))
+            raise Exception('{} has no k-mers count. Probably not valid file'.format(query_file))
+
+    else:
+        raise Exception('Something went wrong when trying to dump the k-mer couting.')
 
 
 def write_results(results, output_directory, query_files, taxonomy_level):
@@ -167,7 +175,7 @@ def aggregate_level(results, position):
     """Aggregate abundance of metagenomes by taxonomic level.
 
     Args:
-        results (dict): Path to database
+        results (dict): Path to results
         position (int): Position of level in the results
 
     Returns:
