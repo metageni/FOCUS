@@ -247,11 +247,12 @@ def main():
 
     # check if k-mer counter is installed
     elif not jellyfish_path:
-        LOGGER.critical("K-MER COUNTER: Jellyfish is not installed. Please install 2.XX".format(query))
+        LOGGER.critical("K-MER COUNTER: Jellyfish is not installed. Please install 2.XX")
 
     # check jellyfish installed is the correct version
     elif jellyfish_version != "2":
-        LOGGER.critical("K-MER COUNTER: Jellyfish needs to be version 2.XX.".format(query))
+        LOGGER.critical("K-MER COUNTER: Jellyfish needs to be version 2.XX. You have version {}".
+                        format(jellyfish_version))
 
     # check if query is exists
     elif not query.exists():
