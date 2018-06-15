@@ -228,6 +228,7 @@ def main():
     database_path = Path(WORK_DIRECTORY, "db/k" + kmer_size)
     threads = args.threads
     jellyfish_path = which("jellyfish")
+    jellyfish_version = os.popen("jellyfish count --version").read().split(".")[0] if jellyfish_path else None
 
     LOGGER.info ("FOCUS: An Agile Profiler for Metagenomic Data")
 
@@ -246,7 +247,11 @@ def main():
 
     # check if k-mer counter is installed
     elif not jellyfish_path:
-        LOGGER.critical("K-MER COUNTER: Jellyfish is not installed.".format(query))
+        LOGGER.critical("K-MER COUNTER: Jellyfish is not installed. Please install 2.XX".format(query))
+
+    # check jellyfish installed is the correct version
+    elif jellyfish_version != "2":
+        LOGGER.critical("K-MER COUNTER: Jellyfish needs to be version 2.XX.".format(query))
 
     # check if query is exists
     elif not query.exists():
