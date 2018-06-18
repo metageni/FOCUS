@@ -206,7 +206,13 @@ def run_nnls(database_matrix, query_count):
     return normalise(nnls(database_matrix, query_count)[0])
 
 
-def main():
+def parse_args():
+    """Parse args entered by the user.
+
+    Returns:
+        argparse.Namespace: parsed arguments
+
+    """
     parser = argparse.ArgumentParser(description="FOCUS: An Agile Profiler for Metagenomic Data",
                                      epilog= "example > (multiple files) python focus.py -q samples directory")
     parser.add_argument("-q", "--query", help="Path to directory with FAST(A/Q) files", required=True)
@@ -217,7 +223,11 @@ def main():
     parser.add_argument("-p", "--output_prefix",  help="Output prefix (Default: output)", default="output")
     parser.add_argument("-t", "--threads",  help="Number Threads used in the k-mer counting (Default: 4)", default="4")
 
-    args = parser.parse_args()
+    return parser.parse_args()
+
+
+def main():
+    args = parse_args()
 
     # parameters and other variables
     query = Path(args.query)
