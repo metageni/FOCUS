@@ -23,7 +23,7 @@ FOCUS generates a tabular output per taxonomic level (`Kingdom`, `Phylum`, `Clas
 
 
 #### (3) Dependencies
-- [Python 3.XX](http://www.python.org/download)
-- [Jellyfish 2.2.6](https://github.com/gmarcais/Jellyfish/releases/tag/v2.2.6). Bioconda if you have  [macOS](https://anaconda.org/bioconda/jellyfish)
+- [Python 3.6](http://www.python.org/download)
+- [Jellyfish 2.2.6](https://github.com/gmarcais/Jellyfish/releases/tag/v2.2.6). if using macOS, use [bioconda](https://anaconda.org/bioconda/jellyfish)
 - [Numpy](https://github.com/numpy/numpy)
 - [SciPy](https://github.com/scipy/scipy)
