@@ -19,8 +19,6 @@ LOGGER_FORMAT = '[%(asctime)s - %(levelname)s] %(message)s'
 logging.basicConfig(format=LOGGER_FORMAT, level=logging.INFO)
 LOGGER = logging.getLogger(__name__)
 
-WORK_DIRECTORY = 'focus_app'
-
 
 def normalise(raw_counts):
     """Normalise raw counts into proportions.
@@ -218,7 +216,7 @@ def parse_args():
     parser.add_argument("-q", "--query", help="Path to directory with FAST(A/Q) files", required=True)
     parser.add_argument("-o", "--output_directory",  help="Path to output files", required=True)
     parser.add_argument("-k", "--kmer_size",  help="K-mer size (6 or 7) (Default: 6)", default="6")
-    parser.add_argument("-d", "--work_directory",  help="Work directory (Default: focus_app)", default="focus_app")
+    parser.add_argument("-d", "--work_directory",  help="Work directory (Default: focus_app)")
     parser.add_argument("-b", "--alternate_directory",  help="Alternate directory for your databases", default="")
     parser.add_argument("-p", "--output_prefix",  help="Output prefix (Default: output)", default="output")
     parser.add_argument("-t", "--threads",  help="Number Threads used in the k-mer counting (Default: 4)", default="4")
@@ -234,7 +232,7 @@ def main():
     prefix = args.output_prefix
     output_directory = Path(args.output_directory)
     kmer_size = args.kmer_size
-    WORK_DIRECTORY = Path(args.alternate_directory) if args.alternate_directory else Path(args.work_directory)
+    WORK_DIRECTORY = Path(args.alternate_directory) if args.alternate_directory else Path(__file__).parents[0]
     database_path = Path(WORK_DIRECTORY, "db/k" + kmer_size)
     threads = args.threads
     jellyfish_path = which("jellyfish")
