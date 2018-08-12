@@ -3,14 +3,13 @@
 
 from setuptools import setup
 
-
 __version__ = '0.11'
 
 
 requirements = [
     'numpy',
-    'setuptools-scm',
-    'scipy'
+    'scipy',
+    'setuptools-scm'
 ]
 
 test_requirements = [
@@ -42,7 +41,7 @@ setup(
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
         'Natural Language :: English',
-        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Topic :: Scientific/Engineering :: Bioinformatics',
     ],
     test_suite = 'tests',
