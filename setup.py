@@ -3,17 +3,14 @@
 
 from setuptools import setup
 
-__version__ = '0.11'
-
 
 requirements = [
-    'numpy',
-    'scipy',
-    'setuptools-scm'
+    'numpy >= 1.12.1',
+    'scipy >= 0.19.0',
 ]
 
 test_requirements = [
-    # TODO: put package test requirements here
+    'pytest'
 ]
 
 setup_requirements = [
@@ -25,7 +22,7 @@ setup(
     name = 'focus',
     use_scm_version = True,
     description = 'FOCUS: An Agile Profiler for Metagenomic Data',
-    author = 'Genivaldo Silva',
+    author = 'Genivaldo G.Z. Silva',
     author_email = 'genivaldo.gueiros@gmail.com',
     url = 'https://github.com/metageni/focus',
     packages = [
