@@ -6,7 +6,8 @@
 - If you are using FOCUS cloned from github, please uncompress `db.zip` file inside `focus_app`
 - FOCUS  before tool rewrite can be found [here](https://github.com/metageni/FOCUS/archive/0.31.zip)
 
-#### (1) Usage
+
+#### (1) Installation
 	python focus.py -q INPUT_DIR -k -o OUTPUT_DIR
 
 		-q Path to directory with FASTA/FASTQ file(s)
@@ -18,11 +19,23 @@
     	-p Ouput prefix (Default: output)
 
 
-#### (2) Output
+#### (2) Usage
+	python focus.py -q INPUT_DIR -k -o OUTPUT_DIR
+
+		-q Path to directory with FASTA/FASTQ file(s)
+
+		-o Path to output directory
+
+		-k K-mer size (6 or 7 avaliable) (Default: 6)
+
+    	-p Ouput prefix (Default: output)
+
+
+#### (3) Output
 FOCUS generates a tabular output per taxonomic level (`Kingdom`, `Phylum`, `Class`, `Order`, `Family`, `Genus`, `Species`, and `Strain`) and one with all levels which can be used as [STAMP](http://kiwi.cs.dal.ca/Software/STAMP)'s input for statistical analysis.
 
 
-#### (3) Dependencies
+#### (4) Dependencies
 - [Python 3.6](http://www.python.org/download)
 - [Jellyfish 2.2.6](https://github.com/gmarcais/Jellyfish/releases/tag/v2.2.6). if using macOS, use [bioconda](https://anaconda.org/bioconda/jellyfish)
 - [Numpy](https://github.com/numpy/numpy)
