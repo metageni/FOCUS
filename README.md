@@ -8,19 +8,20 @@
 
 
 #### (1) Installation
-	python focus.py -q INPUT_DIR -k -o OUTPUT_DIR
+This will give you command line program:
 
-		-q Path to directory with FASTA/FASTQ file(s)
+	# clone focus
+	git clone git@github.com:metageni/FOCUS.git
 
-		-o Path to output directory
+	# unzip database and move it to folder
+	unzip FOCUS/focus_app/db.zip && mv db FOCUS/focus_app/
 
-		-k K-mer size (6 or 7 avaliable) (Default: 6)
-
-    	-p Ouput prefix (Default: output)
+	# install focus
+	cd FOCUS && python setup.py install
 
 
 #### (2) Usage
-	python focus.py -q INPUT_DIR -k -o OUTPUT_DIR
+	focus -q INPUT_DIR -k -o OUTPUT_DIR
 
 		-q Path to directory with FASTA/FASTQ file(s)
 
