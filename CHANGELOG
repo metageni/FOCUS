@@ -1,0 +1,49 @@
+-- Version history --
+
+Certain updates only apply to the web version, but they should be obvious to
+figure out since they are likely modification of the interface.
+
+-> FOCUS 1.1:
+- Setuptools
+
+-> FOCUS 1.0:
+- Refactor to python3
+
+-> FOCUS 0.31:
+- Parameter "-s" for multiple samples is not required anymore. FOCUS identies now if the user is passing
+  a directory or file
+
+-> FOCUS 0.3:
+- Fixed minor bug in the STAMP input creation.
+
+-> FOCUS 0.29:
+- Split the STAMP output in different level for different for multiple samples.
+
+-> FOCUS 0.28:
+- FOCUS database was updated on (08/08/2015), and now it has 2785 complete genomes
+- Now FOCUS can analyse multiple samples, and it generates an output in a format compatible with STAMP.
+
+-> FOCUS 0.27:
+-Updated DB by fixing the "Unknown Genus"
+-Regularization was removed after reading (Slawski and Hein, 2013).
+ The paper argues that the NNLS may have a better result than using regularization
+-minor changes
+
+-> FOCUS 0.26:
+-Tabular output
+-Error when trying to add new add into the database (Thanks Bob Bowers for the report)
+-minor changes
+
+-> FOCUS 0.25:
+-Minor changes
+
+-> FOCUS 0.24:
+-Fixed error caused by Jellyfish when counting k-mer with Jellyfish 2.XX on FOCUS 0.23. Now FOCUS works with any Jellyfish's version.
+
+-> FOCUS 0.23:
+-Minor changes
+
+
+References:
+Slawski,M. and Hein,M. (2013) Non-negative least squares for high-dimensional linear models: Consistency and sparse
+recovery without regularization. Electron. J. Stat., 7, 3004–3056.
