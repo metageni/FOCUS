@@ -5,6 +5,7 @@ figure out since they are likely modification of the interface.
 
 -> FOCUS 1.1:
 - Setuptools
+- Set FOCUS to be agnostic to the location of the script in relation to where the program is executed
 
 -> FOCUS 1.0:
 - Refactor to python3
