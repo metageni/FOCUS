@@ -10,6 +10,10 @@
 #### (1) Installation
 This will give you command line program:
 
+	pip install metagenomics-focus
+
+or
+
 	# clone focus
 	git clone git@github.com:metageni/FOCUS.git
 
