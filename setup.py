@@ -19,7 +19,7 @@ setup_requirements = [
 
 
 setup(
-    name = 'focus',
+    name = 'metagenomics-focus',
     version = 1.1,
     description = 'FOCUS: An Agile Profiler for Metagenomic Data',
     author = 'Genivaldo G.Z. Silva',
