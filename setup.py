@@ -20,7 +20,7 @@ setup_requirements = [
 
 setup(
     name = 'metagenomics-focus',
-    version = 1.1,
+    version = 1.2,
     description = 'FOCUS: An Agile Profiler for Metagenomic Data',
     author = 'Genivaldo G.Z. Silva',
     author_email = 'genivaldo.gueiros@gmail.com',
@@ -39,7 +39,7 @@ setup(
         'Intended Audience :: Developers',
         'Natural Language :: English',
         'Programming Language :: Python :: 3.6',
-        'Topic :: Scientific/Engineering :: Bioinformatics',
+        'Topic :: Scientific/Engineering :: Bio-Informatics',
     ],
     test_suite = 'tests',
     tests_require = test_requirements,
