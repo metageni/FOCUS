@@ -20,7 +20,7 @@ setup_requirements = [
 
 setup(
     name = 'focus',
-    use_scm_version = True,
+    version = 1.1,
     description = 'FOCUS: An Agile Profiler for Metagenomic Data',
     author = 'Genivaldo G.Z. Silva',
     author_email = 'genivaldo.gueiros@gmail.com',
