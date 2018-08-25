@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
-
 from setuptools import setup
 
 
@@ -20,7 +18,7 @@ setup_requirements = []
 
 setup(
     name = 'metagenomics-focus',
-    version=os.environ['PKG_VERSION'],
+    version= 1.3,
     description = 'FOCUS: An Agile Profiler for Metagenomic Data',
     author = 'Genivaldo G.Z. Silva',
     author_email = 'genivaldo.gueiros@gmail.com',
