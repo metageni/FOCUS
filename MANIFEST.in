@@ -1,1 +1,3 @@
-include focus_app/db/k*
+include focus_app/db/k6
+include focus_app/db/k7
+include focus_app/db.zip
