@@ -6,7 +6,7 @@
 * [Usage](#usage)
 * [Output](#output)
 * [Dependencies](#dependencies)
-* [About](#about)
+* [Citing](#citing)
 
 
 ## Important
@@ -52,7 +52,11 @@ FOCUS generates a tabular output per taxonomic level (`Kingdom`, `Phylum`, `Clas
 - [Numpy 1.12.1](https://github.com/numpy/numpy)
 - [SciPy 0.19.0](https://github.com/scipy/scipy)
 
-## About
+## Citing
 FOCUS was written by Genivaldo G. Z. Silva. Feel free to [contact me](mailto:genivaldo.gueiros@gmail.com)
 
-If you use FOCUS, please cite it: Silva, G. G. Z., D. A. Cuevas, B. E. Dutilh, and R. A. Edwards, 2014: [FOCUS: An alignment-free model to identify organisms in metagenomes using non-negative least squares. PeerJ.](https://peerj.com/articles/425)
+If you use FOCUS, please cite it:
+
+    Silva, G. G. Z., D. A. Cuevas, B. E. Dutilh, and R. A. Edwards, 2014:
+    FOCUS: An alignment-free model to identify organisms in metagenomes
+    using non-negative least squares. PeerJ.
