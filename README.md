@@ -1,3 +1,5 @@
+<a href="url"><img src="http://edwards.sdsu.edu/focus/logo.png" align="left" height="152" width="289" ></a>
+
 ### FOCUS: An Agile Profiler for Metagenomic Data
 (c) Silva, G. G. Z., D. A. Cuevas, B. E. Dutilh, and R. A. Edwards, 2014: [FOCUS: an alignment-free model to identify organisms in metagenomes using non-negative least squares. PeerJ.](https://peerj.com/articles/425)
 
