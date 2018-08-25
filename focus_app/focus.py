@@ -268,6 +268,15 @@ def main():
     # check if database exists
     elif not database_path.exists():
         LOGGER.critical("DATABASE: {} does not exist. Did you extract db.zip?".format(database_path))
+        compressed_db = Path(WORK_DIRECTORY, "/db.zip")
+        uncompress_path = Path(WORK_DIRECTORY, "/db/")
+
+        # try to download database for you
+        if compressed_db.exists():
+            LOGGER.info("DATABASE: Uncompressing Database for you :)")
+            os.system("unzip {} -d {}".format(str(compressed_db), str(uncompress_path)))
+        else:
+            LOGGER.critical("{} was not found".format(compressed_db))
 
     # check if work directory exists
     elif WORK_DIRECTORY != WORK_DIRECTORY or not WORK_DIRECTORY.exists():
