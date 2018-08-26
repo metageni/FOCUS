@@ -248,8 +248,21 @@ def main():
     if not query.is_dir():
         LOGGER.critical("QUERY: {} is not a directory".format(query))
 
+    # check if database exists
+    if not database_path.exists():
+        LOGGER.critical("DATABASE: {} does not exist. Did you extract db.zip?".format(database_path))
+        compressed_db = Path(WORK_DIRECTORY, "db.zip")
+        uncompress_path = Path(WORK_DIRECTORY)
+
+        # try to download database for you
+        if compressed_db.exists():
+            LOGGER.info("DATABASE: Uncompressing Database for you :)")
+            os.system("unzip {} -d {}".format(str(compressed_db), uncompress_path))
+        else:
+            LOGGER.critical("{} was not found".format(compressed_db))
+
     # check if at least one of the queries is valid
-    elif is_wanted_file(os.listdir(query)) == []:
+    if is_wanted_file(os.listdir(query)) == []:
         LOGGER.critical("QUERY: {} does not have any Fasta/Fna/Fastq file".format(query))
 
     # check if k-mer counter is installed
@@ -264,19 +277,6 @@ def main():
     # check if query is exists
     elif not query.exists():
         LOGGER.critical("QUERY: {} does not exist".format(query))
-
-    # check if database exists
-    elif not database_path.exists():
-        LOGGER.critical("DATABASE: {} does not exist. Did you extract db.zip?".format(database_path))
-        compressed_db = Path(WORK_DIRECTORY, "/db.zip")
-        uncompress_path = Path(WORK_DIRECTORY, "/db/")
-
-        # try to download database for you
-        if compressed_db.exists():
-            LOGGER.info("DATABASE: Uncompressing Database for you :)")
-            os.system("unzip {} -d {}".format(str(compressed_db), str(uncompress_path)))
-        else:
-            LOGGER.critical("{} was not found".format(compressed_db))
 
     # check if work directory exists
     elif WORK_DIRECTORY != WORK_DIRECTORY or not WORK_DIRECTORY.exists():
