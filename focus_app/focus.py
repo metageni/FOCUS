@@ -124,7 +124,8 @@ def count_kmers(query_file, kmer_size, threads, kmer_order):
     output_dump = Path("kmer_dump_{}".format(suffix))
 
     # count and dump kmers counts
-    os.system("jellyfish count -m {} -o {} -s 100M -t {} -C --disk {}".format(kmer_size, output_count, threads, query_file))
+    os.system("jellyfish count -m {} -o {} -s 100M -t {} -C --disk {}".format(kmer_size, output_count, threads,
+                                                                              query_file))
     os.system("jellyfish dump {} -c > {}".format(output_count, output_dump))
     # delete binary counts
     os.system("rm {}".format(output_count))
@@ -212,7 +213,7 @@ def parse_args():
 
     """
     parser = argparse.ArgumentParser(description="FOCUS: An Agile Profiler for Metagenomic Data",
-                                     epilog= "example > focus -q samples directory")
+                                     epilog="example > focus -q samples directory")
     parser.add_argument("-q", "--query", help="Path to directory with FAST(A/Q) files", required=True)
     parser.add_argument("-o", "--output_directory",  help="Path to output files", required=True)
     parser.add_argument("-k", "--kmer_size",  help="K-mer size (6 or 7) (Default: 6)", default="6")
@@ -237,7 +238,7 @@ def main():
     jellyfish_path = which("jellyfish")
     jellyfish_version = os.popen("jellyfish count --version").read().split(".")[0] if jellyfish_path else None
 
-    LOGGER.info ("FOCUS: An Agile Profiler for Metagenomic Data")
+    LOGGER.info("FOCUS: An Agile Profiler for Metagenomic Data")
 
     # check if output_directory is exists - if not, creates it
     if not output_directory.exists():
@@ -254,8 +255,11 @@ def main():
         compressed_db = Path(WORK_DIRECTORY, "db.zip")
         uncompress_path = Path(WORK_DIRECTORY)
 
-        # try to download database for you
-        if compressed_db.exists():
+        # check if unzip is installed
+        if not which("unzip"):
+            LOGGER.critical("Install unzip !!!")
+        # try to uncompress database for you
+        elif compressed_db.exists():
             LOGGER.info("DATABASE: Uncompressing Database for you :)")
             os.system("unzip {} -d {}".format(str(compressed_db), uncompress_path))
         else:
