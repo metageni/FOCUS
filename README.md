@@ -1,16 +1,11 @@
 ![](logo/focus_small_logo.png "Logo")
 
 ### FOCUS: An Agile Profiler for Metagenomic Data
-* [Important](#important)
 * [Installation](#installation)
 * [Usage](#usage)
 * [Output](#output)
 * [Dependencies](#dependencies)
 * [Citing](#citing)
-
-
-## Important
-- If you are using FOCUS cloned from github, please uncompress `db.zip` file inside `focus_app`
 
 ## Installation
 This will give you command line program:
