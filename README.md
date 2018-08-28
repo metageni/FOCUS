@@ -2,10 +2,10 @@
 
 #### FOCUS: An Agile Profiler for Metagenomic Data
 * [Installation](#installation)
-    * [Dependencies](#dependencies)
-    * [Bioconda](#bioconda)
-    * [Pip](#pip)
-    * [Git](#git)
+    * [dependencies](#dependencies)
+    * [bioconda](#bioconda)
+    * [pip](#pip)
+    * [git](#git)
 * [Usage](#usage)
 * [Output](#output)
 * [Citing](#citing)
@@ -24,6 +24,7 @@
 You can now easily install FOCUS using [conda](https://conda.io) via the
 [Bioconda](https://bioconda.github.io/) channel. It is as easy as:
 
+    # bioconda should handle all the dependencies
     conda create -n focus -c bioconda focus
 	source activate focus
 
@@ -32,9 +33,12 @@ This will create a conda environment called `focus` (as specified by the
 line activates the newly created `focus` conda environment.
 
 ### Pip
+	# pip also install numpy and scipy
 	pip install metagenomics-focus
 
 ### Git
+
+	# these steps should install numpy and scipy
 
 	# clone focus
 	git clone git@github.com:metageni/FOCUS.git
