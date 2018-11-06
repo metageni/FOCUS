@@ -10,18 +10,21 @@ from numpy import array
 
 
 def test_normalise():
-    assert list(normalise(array([1, 1,]))) == [0.5, 0.5]
+    assert list(normalise(array([1, 1, ]))) == [0.5, 0.5]
     assert list(normalise(array([2, 2, 2, 2]))) == [0.25, 0.25, 0.25, 0.25]
 
     # bad input
-    with pytest.raises (RuntimeWarning):
+    with pytest.raises(RuntimeWarning):
         normalise([0, 0, 0])
 
 
 def test_is_wanted_file():
-    assert is_wanted_file(["a.fasta", "b.fastq", "x.FASTq", "y.FASTA", "n.fna"]) == ['a.fasta', 'b.fastq', 'n.fna', 'x.FASTq', 'y.FASTA']
-    assert is_wanted_file(["f.png", "a.fasta", "b.fastq", "x.FASTq", "y.FASTA", "n.fna"]) == ['a.fasta', 'b.fastq', 'n.fna', 'x.FASTq', 'y.FASTA']
-    assert is_wanted_file(["f.png" , "queries/"]) == []
+    assert is_wanted_file(["a.fasta", "b.fastq", "x.FASTq", "y.FASTA", "n.fna"]) == ['a.fasta', 'b.fastq', 'n.fna',
+                                                                                     'x.FASTq', 'y.FASTA']
+    assert is_wanted_file(["f.png", "a.fasta", "b.fastq", "x.FASTq", "y.FASTA", "n.fna"]) == ['a.fasta', 'b.fastq',
+                                                                                              'n.fna', 'x.FASTq',
+                                                                                              'y.FASTA']
+    assert is_wanted_file(["f.png", "queries/"]) == []
 
 
 def test_count_kmers():
@@ -49,14 +52,15 @@ def test_load_database():
     # simple database
     database_matrix, organisms, kmer_order = load_database("tests/data/k6_small_sample.txt")
     assert kmer_order == ['GAACGC', 'GAACGA', 'CACCCA']
-    assert organisms == ['Bacteria\tSpirochaetes\tSpirochaetia\tSpirochaetales\tSpirochaetaceae\tSphaerochaeta\tSphaerochaeta_pleomorpha\tSphaerochaeta_pleomorpha_Grapes_uid82365',
-                  'Bacteria\tFirmicutes\tBacilli\tLactobacillales\tStreptococcaceae\tStreptococcus\tStreptococcus_suis\tStreptococcus_suis_98HAH33_uid58665']
+    assert organisms == [
+        'Bacteria\tSpirochaetes\tSpirochaetia\tSpirochaetales\tSpirochaetaceae\tSphaerochaeta\tSphaerochaeta_pleomorpha\tSphaerochaeta_pleomorpha_Grapes_uid82365',
+        'Bacteria\tFirmicutes\tBacilli\tLactobacillales\tStreptococcaceae\tStreptococcus\tStreptococcus_suis\tStreptococcus_suis_98HAH33_uid58665']
     assert [list(xx) for xx in database_matrix] == [[0.26407041877834087, 0.27930682976554538],
-                                                    [0.38383568951720459,0.38379204892966362],
+                                                    [0.38383568951720459, 0.38379204892966362],
                                                     [0.35209389170445454, 0.33690112130479105]]
 
     # bad database with all keys 0 in row = raise error
-    with pytest.raises (RuntimeWarning):
+    with pytest.raises(RuntimeWarning):
         load_database("tests/data/k6_small_sample_empty_record.txt")
 
 
@@ -66,26 +70,26 @@ def test_run_nnls():
     # fake metagenomic count
     # example 1
     random.seed(1128)
-    fake_query_count = normalise([random.randint(10000, 200000) for _ in range (3)])
+    fake_query_count = normalise([random.randint(10000, 200000) for _ in range(3)])
     assert list(run_nnls(database_matrix, fake_query_count)) == [0.11743935706399153, 0.88256064293600844]
 
     # example 2
     random.seed(2)
-    fake_query_count = normalise([random.randint(10000, 200000) for _ in range (3)])
+    fake_query_count = normalise([random.randint(10000, 200000) for _ in range(3)])
     assert list(run_nnls(database_matrix, fake_query_count)) == [0.79079139795692821, 0.20920860204307179]
 
     # example 3
     random.seed(500)
-    fake_query_count = normalise([random.randint(10000, 200000) for _ in range (3)])
+    fake_query_count = normalise([random.randint(10000, 200000) for _ in range(3)])
     assert list(run_nnls(database_matrix, fake_query_count)) == [0.40650798820847034, 0.59349201179152955]
 
 
 def test_aggregate_level():
     # load database
-    database_matrix, organisms, kmer_order = load_database ("tests/data/k6_small_sample.txt")
+    database_matrix, organisms, kmer_order = load_database("tests/data/k6_small_sample.txt")
 
     # test 1
-    random.seed (500)
+    random.seed(500)
 
     true_answer_1 = [
         {'Bacteria': 0.99999999999999989},
@@ -105,24 +109,22 @@ def test_aggregate_level():
          'Streptococcus_suis_98HAH33_uid58665': 0.59349201179152955},
     ]
 
-
-
     # fake metagenomic count
-    fake_query_count = normalise ([random.randint (10000, 200000) for _ in range (3)])
+    fake_query_count = normalise([random.randint(10000, 200000) for _ in range(3)])
     # run nnls
-    organisms_abundance = run_nnls (database_matrix, fake_query_count)
+    organisms_abundance = run_nnls(database_matrix, fake_query_count)
 
-    results = {organisms[pos]: organisms_abundance[pos] for pos, profile in enumerate (organisms_abundance)}
+    results = {organisms[pos]: organisms_abundance[pos] for pos, profile in enumerate(organisms_abundance)}
 
     assert_result = []
     for pos in range(8):
-        aggregate_results = aggregate_level (results, pos)
-        assert_result.append (aggregate_results)
+        aggregate_results = aggregate_level(results, pos)
+        assert_result.append(aggregate_results)
 
     assert assert_result == true_answer_1
 
     # test 2
-    random.seed (1128)
+    random.seed(1128)
 
     true_answer_2 = [
         {'Bacteria': 1.0},
@@ -143,16 +145,16 @@ def test_aggregate_level():
     ]
 
     # fake metagenomic count
-    fake_query_count = normalise ([random.randint (10000, 200000) for _ in range (3)])
+    fake_query_count = normalise([random.randint(10000, 200000) for _ in range(3)])
     # run nnls
-    organisms_abundance = run_nnls (database_matrix, fake_query_count)
+    organisms_abundance = run_nnls(database_matrix, fake_query_count)
 
-    results = {organisms[pos]: organisms_abundance[pos] for pos, profile in enumerate (organisms_abundance)}
+    results = {organisms[pos]: organisms_abundance[pos] for pos, profile in enumerate(organisms_abundance)}
 
     assert_result = []
-    for pos in range (8):
-        aggregate_results = aggregate_level (results, pos)
-        assert_result.append (aggregate_results)
+    for pos in range(8):
+        aggregate_results = aggregate_level(results, pos)
+        assert_result.append(aggregate_results)
 
     assert assert_result == true_answer_2
 

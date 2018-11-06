@@ -14,7 +14,6 @@ from numpy import array
 from numpy import sum as numpy_sum
 from scipy.optimize import nnls
 
-
 LOGGER_FORMAT = '[%(asctime)s - %(levelname)s] %(message)s'
 logging.basicConfig(format=LOGGER_FORMAT, level=logging.INFO)
 LOGGER = logging.getLogger(__name__)
@@ -63,6 +62,7 @@ def which(program_name):
         str: Program path
 
     """
+
     def is_exe(fpath):
         return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
 
@@ -215,11 +215,11 @@ def parse_args():
     parser = argparse.ArgumentParser(description="FOCUS: An Agile Profiler for Metagenomic Data",
                                      epilog="example > focus -q samples directory")
     parser.add_argument("-q", "--query", help="Path to directory with FAST(A/Q) files", required=True)
-    parser.add_argument("-o", "--output_directory",  help="Path to output files", required=True)
-    parser.add_argument("-k", "--kmer_size",  help="K-mer size (6 or 7) (Default: 6)", default="6")
-    parser.add_argument("-b", "--alternate_directory",  help="Alternate directory for your databases", default="")
-    parser.add_argument("-p", "--output_prefix",  help="Output prefix (Default: output)", default="output")
-    parser.add_argument("-t", "--threads",  help="Number Threads used in the k-mer counting (Default: 4)", default="4")
+    parser.add_argument("-o", "--output_directory", help="Path to output files", required=True)
+    parser.add_argument("-k", "--kmer_size", help="K-mer size (6 or 7) (Default: 6)", default="6")
+    parser.add_argument("-b", "--alternate_directory", help="Alternate directory for your databases", default="")
+    parser.add_argument("-p", "--output_prefix", help="Output prefix (Default: output)", default="output")
+    parser.add_argument("-t", "--threads", help="Number Threads used in the k-mer counting (Default: 4)", default="4")
 
     return parser.parse_args()
 
