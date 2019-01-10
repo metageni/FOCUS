@@ -129,9 +129,14 @@ def count_kmers(query_file, kmer_size, threads, kmer_order):
     os.system("jellyfish count -m {} -o {} -s 100M -t {} -C --disk {}".format(kmer_size, output_count, threads,
                                                                               query_file))
     os.system("jellyfish dump {} -c > {}".format(output_count, output_dump))
-    # delete binary counts
-    os.system("rm {}".format(output_count))
 
+    # delete binary counts
+    if output_count.exists():
+        os.remove(output_count)
+    else:
+        raise Exception('Jellyfish failed to count the k-mers. Make sure you have installed its required version')
+
+    # checks if k-mer counting correctly was dumped
     if output_dump.exists():
         # not empty file
         if output_dump.stat().st_size:
@@ -140,17 +145,18 @@ def count_kmers(query_file, kmer_size, threads, kmer_order):
                 counts_reader = csv.reader(counts_file, delimiter=' ')
                 for kmer, count in counts_reader:
                     counts[kmer] = int(count)
+
             # delete dump file
-            os.system("rm {}".format(output_dump))
+            os.remove(output_dump)
 
             return [counts[kmer_temp] for kmer_temp in kmer_order]
 
         else:
-            os.system("rm {}".format(output_dump))
+            os.remove(output_dump)
             raise Exception('{} has no k-mers count. Probably not valid file'.format(query_file))
 
     else:
-        raise Exception('Something went wrong when trying to dump the k-mer couting.')
+        raise Exception('Something went wrong when trying to dump the k-mer counting.')
 
 
 def write_results(results, output_directory, query_files, taxonomy_level):
