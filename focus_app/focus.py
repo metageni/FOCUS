@@ -10,6 +10,8 @@ import random
 from pathlib import Path
 from collections import defaultdict
 
+from focus_app import version
+
 from numpy import array
 from numpy import sum as numpy_sum
 from scipy.optimize import nnls
@@ -214,6 +216,7 @@ def parse_args():
     """
     parser = argparse.ArgumentParser(description="FOCUS: An Agile Profiler for Metagenomic Data",
                                      epilog="example > focus -q samples directory")
+    parser.add_argument('-v', '--version', action='version', version='FOCUS {}'.format(version))
     parser.add_argument("-q", "--query", help="Path to directory with FAST(A/Q) files", required=True)
     parser.add_argument("-o", "--output_directory", help="Path to output files", required=True)
     parser.add_argument("-k", "--kmer_size", help="K-mer size (6 or 7) (Default: 6)", default="6")
