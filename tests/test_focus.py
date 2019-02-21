@@ -2,7 +2,9 @@
 
 import random
 
-from focus_app.focus import normalise, load_database, is_wanted_file, count_kmers, which, run_nnls, aggregate_level
+from shutil import which
+
+from focus_app.focus import normalise, load_database, is_wanted_file, count_kmers, run_nnls, aggregate_level
 
 import pytest
 
