@@ -49,15 +49,29 @@ line activates the newly created `focus` conda environment.
 	cd FOCUS && python setup.py install
 
 ## Usage
-	focus -q INPUT_DIR -k -o OUTPUT_DIR
+    focus [-h] [-v] -q QUERY -o OUTPUT_DIRECTORY [-k KMER_SIZE]
+                 [-b ALTERNATE_DIRECTORY] [-p OUTPUT_PREFIX] [-t THREADS] [-l LOG]
 
-		-q Path to directory with FASTA/FASTQ file(s)
+    FOCUS: An Agile Profiler for Metagenomic Data
 
-		-o Path to output directory
+    optional arguments:
+      -h, --help            show this help message and exit
+      -v, --version         show program's version number and exit
+      -q QUERY, --query QUERY
+                            Path to directory with FAST(A/Q) files
+      -o OUTPUT_DIRECTORY, --output_directory OUTPUT_DIRECTORY
+                            Path to output files
+      -k KMER_SIZE, --kmer_size KMER_SIZE
+                            K-mer size (6 or 7) (Default: 6)
+      -b ALTERNATE_DIRECTORY, --alternate_directory ALTERNATE_DIRECTORY
+                            Alternate directory for your databases
+      -p OUTPUT_PREFIX, --output_prefix OUTPUT_PREFIX
+                            Output prefix (Default: output)
+      -t THREADS, --threads THREADS
+                            Number Threads used in the k-mer counting (Default: 4)
+      -l LOG, --log LOG     Path to log file (Default: STDOUT).
 
-		-k k-mer size (6 or 7 avaliable) (Default: 6)
-
-    	-p Ouput prefix (Default: output)
+    example > focus -q samples directory
 
 
 ## Output
