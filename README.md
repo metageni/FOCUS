@@ -17,7 +17,7 @@
 - [Jellyfish 2.2.6](https://github.com/gmarcais/Jellyfish/releases/tag/v2.2.6). if using macOS, use [bioconda](https://anaconda.org/bioconda/jellyfish)
 - [Numpy 1.12.1](https://github.com/numpy/numpy)
 - [SciPy 0.19.0](https://github.com/scipy/scipy)
-- unzip
+- unzip/curl
 
 ### pip3
 	# pip3 also install numpy and scipy
@@ -50,7 +50,8 @@ line activates the newly created `focus` conda environment.
 
 ## Usage
     focus [-h] [-v] -q QUERY -o OUTPUT_DIRECTORY [-k KMER_SIZE]
-                 [-b ALTERNATE_DIRECTORY] [-p OUTPUT_PREFIX] [-t THREADS] [-l LOG]
+             [-b ALTERNATE_DIRECTORY] [-p OUTPUT_PREFIX] [-t THREADS]
+             [--list_output] [-l LOG]
 
     FOCUS: An Agile Profiler for Metagenomic Data
 
@@ -69,9 +70,10 @@ line activates the newly created `focus` conda environment.
                             Output prefix (Default: output)
       -t THREADS, --threads THREADS
                             Number Threads used in the k-mer counting (Default: 4)
+      --list_output         Output results as a list (Default: -o output).
       -l LOG, --log LOG     Path to log file (Default: STDOUT).
 
-    example > focus -q samples directory
+    example > focus -q samples_directory
 
 
 ## Output

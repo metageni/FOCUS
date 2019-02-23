@@ -130,6 +130,26 @@ def count_kmers(query_file, kmer_size, threads, kmer_order):
         raise Exception('Something went wrong when trying to dump the k-mer counting.')
 
 
+def refine_results(results, query_files, taxonomy_level):
+    """Result result removing rows with 0 counts.
+
+     Args:
+         results (dict): Profile for all the metagenomes.
+         query_files (list): List with list of files profiled.
+         taxonomy_level (list): Taxonomy level(s).
+
+    Returns:
+        list of list: List with refined results.
+
+     """
+    refined_results = [[taxonomy_level[-1:] + [Path(targeted_file).parts[-1] for targeted_file in query_files]]]
+    for taxa in results:
+        if sum(results[taxa]) > 0:
+            refined_results.append(taxa.split("\t")[-1:] + [abundance * 100 for abundance in results[taxa]])
+
+    return refined_results
+
+
 def write_results(results, output_directory, query_files, taxonomy_level):
     """Write FOCUS results.
 
@@ -192,7 +212,7 @@ def parse_args():
 
     """
     parser = argparse.ArgumentParser(description="FOCUS: An Agile Profiler for Metagenomic Data",
-                                     epilog="example > focus -q samples directory")
+                                     epilog="example > focus -q samples_directory")
     parser.add_argument('-v', '--version', action='version', version='FOCUS {}'.format(version))
     parser.add_argument("-q", "--query", help="Path to directory with FAST(A/Q) files", required=True)
     parser.add_argument("-o", "--output_directory", help="Path to output files", required=True)
@@ -200,13 +220,17 @@ def parse_args():
     parser.add_argument("-b", "--alternate_directory", help="Alternate directory for your databases", default="")
     parser.add_argument("-p", "--output_prefix", help="Output prefix (Default: output)", default="output")
     parser.add_argument("-t", "--threads", help="Number Threads used in the k-mer counting (Default: 4)", default="4")
+    parser.add_argument('--list_output', help='Output results as a list (Default: -o output).',
+                        action='store_true', required=False)
     parser.add_argument('-l', '--log', help='Path to log file (Default: STDOUT).', required=False)
 
     return parser.parse_args()
 
 
-def main():
-    args = parse_args()
+def main(args=False):
+
+    if not args:
+        args = parse_args()
 
     # parameters and other variables
     query = Path(args.query)
@@ -305,9 +329,9 @@ def main():
             for pos in range(len(organisms)):
                 results[organisms[pos]][query_index] = organisms_abundance[pos]
 
-        logger.info('5) Writing Results to {}'.format(output_directory))
         taxomy_levels = ["Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Strain"]
 
+        logger.info('5) Writing Results to {}'.format(output_directory))
         # All taxonomy levels in one output
         output_file = Path(output_directory, prefix + "_All_levels.xls")
         write_results(results, output_file, query_files, taxomy_levels)
@@ -318,6 +342,10 @@ def main():
             level_result = aggregate_level(results, pos)
             output_file = Path(output_directory, prefix + "_" + level + "_tabular.xls")
             write_results(level_result, output_file, query_files, [level])
+
+        if args.list_output:
+            logger.info('6) Creating list of lists with output')
+            return refine_results(results, query_files, taxomy_levels)
 
     logger.info('Done'.format(output_directory))
 
