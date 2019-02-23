@@ -70,7 +70,7 @@ line activates the newly created `focus` conda environment.
                             Output prefix (Default: output)
       -t THREADS, --threads THREADS
                             Number Threads used in the k-mer counting (Default: 4)
-      --list_output         Output results as a list (Default: -o output).
+      --list_output         Output results as a list
       -l LOG, --log LOG     Path to log file (Default: STDOUT).
 
     example > focus -q samples_directory
