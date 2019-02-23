@@ -220,7 +220,7 @@ def parse_args():
     parser.add_argument("-b", "--alternate_directory", help="Alternate directory for your databases", default="")
     parser.add_argument("-p", "--output_prefix", help="Output prefix (Default: output)", default="output")
     parser.add_argument("-t", "--threads", help="Number Threads used in the k-mer counting (Default: 4)", default="4")
-    parser.add_argument('--list_output', help='Output results as a list (Default: -o output).',
+    parser.add_argument('--list_output', help='Output results as a list',
                         action='store_true', required=False)
     parser.add_argument('-l', '--log', help='Path to log file (Default: STDOUT).', required=False)
 
