@@ -18,18 +18,16 @@ from numpy import sum as numpy_sum
 from scipy.optimize import nnls
 
 LOGGER_FORMAT = '[%(asctime)s - %(levelname)s] %(message)s'
-logging.basicConfig(format=LOGGER_FORMAT, level=logging.INFO)
-LOGGER = logging.getLogger(__name__)
 
 
 def normalise(raw_counts):
     """Normalise raw counts into proportions.
 
     Args:
-        raw_counts (numpy.ndarray): Array with raw count
+        raw_counts (numpy.ndarray): Array with raw count.
 
     Returns:
-        numpy.ndarray: Normalised data
+        numpy.ndarray: Normalised data.
 
     """
     sum_values = numpy_sum(raw_counts)
@@ -43,10 +41,10 @@ def is_wanted_file(queries):
     """Remove files from query files that not have extension .fasta/.fastq/.fna
 
     Args:
-        queries (list): List with query names
+        queries (list): List with query names.
 
     Returns:
-        list: sorted list with only .fasta/.fastq/.fna files
+        list: Sorted list with only .fasta/.fastq/.fna files.
 
     """
     queries = [query for query in queries if query.split(".")[-1].lower() in ["fna", "fasta", "fastq"]]
@@ -59,12 +57,12 @@ def load_database(database_path):
     """Load database.
 
     Args:
-        database_path (PosixPath): Path to database
+        database_path (PosixPath): Path to database.
 
     Returns:
-        numpy.ndarray: Matrix with loaded database
-        list: List of organisms in the database
-        list: K-mer database order
+        numpy.ndarray: Matrix with loaded database.
+        list: List of organisms in the database.
+        list: K-mer database order.
 
     """
     database_results = {}
@@ -85,13 +83,13 @@ def count_kmers(query_file, kmer_size, threads, kmer_order):
     """Count k-mers on FAST(A/Q) file.
 
     Args:
-        query_file (PosixPath): Query in FAST(A/Q) file
-        kmer_size (str): K-mer size
-        threads (str): Number of threads to use in the k-mer counting
-        kmer_order (list): List with k-mers database order
+        query_file (PosixPath): Query in FAST(A/Q) file.
+        kmer_size (str): K-mer size.
+        threads (str): Number of threads to use in the k-mer counting.
+        kmer_order (list): List with k-mers database order.
 
     Returns:
-        numpy.ndarray: K-mer counts
+        numpy.ndarray: K-mer counts.
 
     """
     suffix = str(random.random())
@@ -136,10 +134,10 @@ def write_results(results, output_directory, query_files, taxonomy_level):
     """Write FOCUS results.
 
      Args:
-         results (dict): Profile for all the metagenomes
-         output_directory (PosixPath): Path to output file
-         query_files (list): List with list of files profiled
-         taxonomy_level (list): Taxonomy level(s)
+         results (dict): Profile for all the metagenomes.
+         output_directory (PosixPath): Path to output file.
+         query_files (list): List with list of files profiled.
+         taxonomy_level (list): Taxonomy level(s).
 
      """
     with open(output_directory, 'w') as outfile:
@@ -155,11 +153,11 @@ def aggregate_level(results, position):
     """Aggregate abundance of metagenomes by taxonomic level.
 
     Args:
-        results (dict): Path to results
-        position (int): Position of level in the results
+        results (dict): Path to results.
+        position (int): Position of level in the results.
 
     Returns:
-        dict: Aggregated result targeting chosen level
+        dict: Aggregated result targeting chosen level.
 
     """
     level_results = defaultdict(list)
@@ -176,11 +174,11 @@ def run_nnls(database_matrix, query_count):
     """Run Non-negative least squares (NNLS) algorithm.
 
     Args:
-        database_matrix (ndarray): Matrix with count for organisms in the database
-        query_count (ndarray): Metagenome k-mer count
+        database_matrix (ndarray): Matrix with count for organisms in the database.
+        query_count (ndarray): Metagenome k-mer count.
 
     Returns:
-        numpy.ndarray: Abundances of each organism
+        numpy.ndarray: Abundances of each organism.
 
     """
     return normalise(nnls(database_matrix, query_count)[0])
@@ -190,7 +188,7 @@ def parse_args():
     """Parse args entered by the user.
 
     Returns:
-        argparse.Namespace: parsed arguments
+        argparse.Namespace: Parsed arguments.
 
     """
     parser = argparse.ArgumentParser(description="FOCUS: An Agile Profiler for Metagenomic Data",
@@ -202,6 +200,7 @@ def parse_args():
     parser.add_argument("-b", "--alternate_directory", help="Alternate directory for your databases", default="")
     parser.add_argument("-p", "--output_prefix", help="Output prefix (Default: output)", default="output")
     parser.add_argument("-t", "--threads", help="Number Threads used in the k-mer counting (Default: 4)", default="4")
+    parser.add_argument('-l', '--log', help='Path to log file (Default: STDOUT).', required=False)
 
     return parser.parse_args()
 
@@ -214,84 +213,91 @@ def main():
     prefix = args.output_prefix
     output_directory = Path(args.output_directory)
     kmer_size = args.kmer_size
-    WORK_DIRECTORY = Path(args.alternate_directory) if args.alternate_directory else Path(__file__).parents[0]
-    database_path = Path(WORK_DIRECTORY, "db/k" + kmer_size)
+    work_directory = Path(args.alternate_directory) if args.alternate_directory else Path(__file__).parents[0]
+    database_path = Path(work_directory, "db/k" + kmer_size)
     threads = args.threads
     jellyfish_path = which("jellyfish")
     jellyfish_version = os.popen("jellyfish count --version").read().split(".")[0] if jellyfish_path else None
 
-    LOGGER.info("FOCUS: An Agile Profiler for Metagenomic Data")
+    if args.log:
+        logging.basicConfig(format=LOGGER_FORMAT, level=logging.INFO, filename=args.log)
+    else:
+        logging.basicConfig(format=LOGGER_FORMAT, level=logging.INFO)
+
+    logger = logging.getLogger(__name__)
+
+    logger.info("FOCUS: An Agile Profiler for Metagenomic Data")
 
     # check if output_directory is exists - if not, creates it
     if not output_directory.exists():
         Path(output_directory).mkdir(parents=True, mode=511)
-        LOGGER.info("OUTPUT: {} does not exist - just created it :)".format(output_directory))
+        logger.info("OUTPUT: {} does not exist - just created it :)".format(output_directory))
 
     # check if at least one of the queries is valid
     if not query.is_dir():
-        LOGGER.critical("QUERY: {} is not a directory".format(query))
+        logger.critical("QUERY: {} is not a directory".format(query))
 
     # check if database exists
     if not database_path.exists():
-        LOGGER.critical("DATABASE: {} does not exist. Did you extract db.zip?".format(database_path))
-        compressed_db = Path(WORK_DIRECTORY, "db.zip")
-        uncompress_path = Path(WORK_DIRECTORY)
+        logger.critical("DATABASE: {} does not exist. Did you extract db.zip?".format(database_path))
+        compressed_db = Path(work_directory, "db.zip")
+        uncompress_path = Path(work_directory)
 
         # check if unzip is installed
         if not which("unzip"):
-            LOGGER.critical("Install unzip !!!")
+            logger.critical("Install unzip !!!")
         # try to uncompress database for you
         elif compressed_db.exists():
-            LOGGER.info("DATABASE: Uncompressing Database for you :)")
+            logger.info("DATABASE: Uncompressing Database for you :)")
             os.system("unzip {} -d {}".format(str(compressed_db), uncompress_path))
         else:
-            LOGGER.critical("{} was not found".format(compressed_db))
+            logger.critical("{} was not found".format(compressed_db))
 
     # check if at least one of the queries is valid
     if is_wanted_file(os.listdir(query)) == []:
-        LOGGER.critical("QUERY: {} does not have any Fasta/Fna/Fastq file".format(query))
+        logger.critical("QUERY: {} does not have any Fasta/Fna/Fastq file".format(query))
 
     # check if k-mer counter is installed
     elif not jellyfish_path:
-        LOGGER.critical("K-MER COUNTER: Jellyfish is not installed. Please install 2.XX")
+        logger.critical("K-MER COUNTER: Jellyfish is not installed. Please install 2.XX")
 
     # check jellyfish installed is the correct version
     elif jellyfish_version != "2":
-        LOGGER.critical("K-MER COUNTER: Jellyfish needs to be version 2.XX. You have version {}".
+        logger.critical("K-MER COUNTER: Jellyfish needs to be version 2.XX. You have version {}".
                         format(jellyfish_version))
 
     # check if query is exists
     elif not query.exists():
-        LOGGER.critical("QUERY: {} does not exist".format(query))
+        logger.critical("QUERY: {} does not exist".format(query))
 
     # check if work directory exists
-    elif WORK_DIRECTORY != WORK_DIRECTORY or not WORK_DIRECTORY.exists():
-        LOGGER.critical("WORK_DIRECTORY: {} does not exist".format(WORK_DIRECTORY))
+    elif work_directory != work_directory or not work_directory.exists():
+        logger.critical("WORK_DIRECTORY: {} does not exist".format(work_directory))
 
     # check k-mer size
     elif kmer_size not in ["6", "7"]:
-        LOGGER.critical("K-MER SIZE: {} is not a valid k-mer size for this program - "
+        logger.critical("K-MER SIZE: {} is not a valid k-mer size for this program - "
                         "please choose 6 or 7".format(kmer_size))
 
     else:
-        LOGGER.info("1) Loading Reference DB")
-        database_path = Path(WORK_DIRECTORY, "db/k" + kmer_size)
+        logger.info("1) Loading Reference DB")
+        database_path = Path(work_directory, "db/k" + kmer_size)
         database_matrix, organisms, kmer_order = load_database(database_path)
 
-        LOGGER.info("2) Reference DB was loaded with {} reference genomes".format(len(organisms)))
+        logger.info("2) Reference DB was loaded with {} reference genomes".format(len(organisms)))
         # get fasta/fastq files
         query_files = is_wanted_file([temp_query for temp_query in os.listdir(query)])
 
         results = {taxa: [0] * len(query_files) for taxa in organisms}
 
         for counter, temp_query in enumerate(query_files):
-            LOGGER.info("3.{}) Working on: {}".format(counter + 1, temp_query))
+            logger.info("3.{}) Working on: {}".format(counter + 1, temp_query))
 
-            LOGGER.info("   Counting k-mers")
+            logger.info("   Counting k-mers")
             # count k-mers
             query_count = normalise(count_kmers(Path(query, temp_query), kmer_size, threads, kmer_order))
             # find the best set of organisms that reconstruct the user metagenome using NNLS
-            LOGGER.info("   Running FOCUS")
+            logger.info("   Running FOCUS")
             organisms_abundance = run_nnls(database_matrix, query_count)
 
             # store results
@@ -299,7 +305,7 @@ def main():
             for pos in range(len(organisms)):
                 results[organisms[pos]][query_index] = organisms_abundance[pos]
 
-        LOGGER.info('5) Writing Results to {}'.format(output_directory))
+        logger.info('5) Writing Results to {}'.format(output_directory))
         taxomy_levels = ["Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Strain"]
 
         # All taxonomy levels in one output
@@ -308,12 +314,12 @@ def main():
 
         # write output for each taxonomy level
         for pos, level in enumerate(taxomy_levels):
-            LOGGER.info('  5.{}) Working on {}'.format(pos + 1, level))
+            logger.info('  5.{}) Working on {}'.format(pos + 1, level))
             level_result = aggregate_level(results, pos)
             output_file = Path(output_directory, prefix + "_" + level + "_tabular.xls")
             write_results(level_result, output_file, query_files, [level])
 
-    LOGGER.info('Done'.format(output_directory))
+    logger.info('Done'.format(output_directory))
 
 
 if __name__ == "__main__":
