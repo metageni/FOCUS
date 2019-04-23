@@ -204,6 +204,19 @@ def run_nnls(database_matrix, query_count):
     return normalise(nnls(database_matrix, query_count)[0])
 
 
+def get_jellyfish_version(jellyfish_path):
+    """Get the version for jellyfish.
+
+    Args:
+        jellyfish_path (str): Path where jellyfish is installed.
+
+    Returns:
+        str or None: Jellyfish's version if tool installed, ``None`` otherwise.
+
+    """
+    return os.popen("jellyfish count --version").read().split(".")[0] if jellyfish_path else None
+
+
 def parse_args():
     """Parse args entered by the user.
 
@@ -241,7 +254,7 @@ def main(args=False):
     database_path = Path(work_directory, "db/k" + kmer_size)
     threads = args.threads
     jellyfish_path = which("jellyfish")
-    jellyfish_version = os.popen("jellyfish count --version").read().split(".")[0] if jellyfish_path else None
+    jellyfish_version = get_jellyfish_version(jellyfish_path)
 
     if args.log:
         logging.basicConfig(format=LOGGER_FORMAT, level=logging.INFO, filename=args.log)
