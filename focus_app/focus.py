@@ -161,7 +161,7 @@ def write_results(results, output_directory, query_files, taxonomy_level):
 
      """
     with open(output_directory, 'w') as outfile:
-        writer = csv.writer(outfile, delimiter='\t', lineterminator='\n')
+        writer = csv.writer(outfile, delimiter=',', lineterminator='\n')
         writer.writerow(taxonomy_level + [Path(targeted_file).parts[-1] for targeted_file in query_files])
 
         for taxa in results:
@@ -333,14 +333,14 @@ def main(args=False):
 
         logger.info('5) Writing results to {}'.format(output_directory))
         # All taxonomy levels in one output
-        output_file = Path(output_directory,  "{}_All_levels.xls".format(prefix))
+        output_file = Path(output_directory,  "{}_All_levels.csv".format(prefix))
         write_results(results, output_file, query_files, taxomy_levels)
 
         # write output for each taxonomy level
         for pos, level in enumerate(taxomy_levels):
             logger.info('  5.{}) Working on {}'.format(pos + 1, level))
             level_result = aggregate_level(results, pos)
-            output_file = Path(output_directory, prefix + "_" + level + "_tabular.xls")
+            output_file = Path(output_directory, "{}_{}_tabular.csv".format(prefix,level))
             write_results(level_result, output_file, query_files, [level])
 
         if args.list_output:
