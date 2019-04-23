@@ -21,7 +21,7 @@ LOGGER_FORMAT = '[%(asctime)s - %(levelname)s] %(message)s'
 
 
 def normalise(raw_counts):
-    """Normalise raw counts into proportions.
+    """Normalise raw counts into relative abundance.
 
     Args:
         raw_counts (numpy.ndarray): Array with raw count.
@@ -38,23 +38,23 @@ def normalise(raw_counts):
 
 
 def is_wanted_file(queries):
-    """Remove files from query files that not have extension .fasta/.fastq/.fna
+    """List with input files with aceptable extensions (.fna/.fasta/.fastq).
 
     Args:
-        queries (list): List with query names.
+        queries (list of str): List with query names.
 
     Returns:
-        list: Sorted list with only .fasta/.fastq/.fna files.
+        list of str: Sorted list with only .fasta/.fastq/.fna files.
 
     """
-    queries = [query for query in queries if query.split(".")[-1].lower() in ["fna", "fasta", "fastq"]]
+    queries = [query for query in queries if Path(query).suffix.lower() in [".fna", ".fasta", ".fastq"]]
     queries.sort()
 
     return queries
 
 
 def load_database(database_path):
-    """Load database.
+    """Load database into numpy array.
 
     Args:
         database_path (PosixPath): Path to database.
@@ -131,11 +131,11 @@ def count_kmers(query_file, kmer_size, threads, kmer_order):
 
 
 def refine_results(results, query_files, taxonomy_level):
-    """Result result removing rows with 0 counts.
+    """Refine results by removing rows with 0 counts.
 
      Args:
-         results (dict): Profile for all the metagenomes.
-         query_files (list): List with list of files profiled.
+         results (dict): Profile for every metagenome.
+         query_files (list): Profiled file(s).
          taxonomy_level (list): Taxonomy level(s).
 
     Returns:
@@ -154,9 +154,9 @@ def write_results(results, output_directory, query_files, taxonomy_level):
     """Write FOCUS results.
 
      Args:
-         results (dict): Profile for all the metagenomes.
+         results (dict): Profile for every metagenome.
          output_directory (PosixPath): Path to output file.
-         query_files (list): List with list of files profiled.
+         query_files (list): Profiled file(s).
          taxonomy_level (list): Taxonomy level(s).
 
      """
@@ -177,7 +177,7 @@ def aggregate_level(results, position):
         position (int): Position of level in the results.
 
     Returns:
-        dict: Aggregated result targeting chosen level.
+        dict: Aggregated result for targeted taxonomy level.
 
     """
     level_results = defaultdict(list)
@@ -191,11 +191,11 @@ def aggregate_level(results, position):
 
 
 def run_nnls(database_matrix, query_count):
-    """Run Non-negative least squares (NNLS) algorithm.
+    """Run non-negative least squares (NNLS) algorithm.
 
     Args:
-        database_matrix (ndarray): Matrix with count for organisms in the database.
-        query_count (ndarray): Metagenome k-mer count.
+        database_matrix (numpy.ndarray): Matrix with counts for organisms in the database.
+        query_count (numpy.ndarray): Metagenome k-mers counts.
 
     Returns:
         numpy.ndarray: Abundances of each organism.
@@ -250,7 +250,7 @@ def main(args=False):
 
     logger = logging.getLogger(__name__)
 
-    logger.info("FOCUS: An Agile Profiler for Metagenomic Data")
+    logger.info("FOCUS: An Agile Profiler for Metagenomic Data - version {}".format(version))
 
     # check if output_directory is exists - if not, creates it
     if not output_directory.exists():
@@ -300,15 +300,15 @@ def main(args=False):
 
     # check k-mer size
     elif kmer_size not in ["6", "7"]:
-        logger.critical("K-MER SIZE: {} is not a valid k-mer size for this program - "
-                        "please choose 6 or 7".format(kmer_size))
+        logger.critical("K-MER SIZE: {} is not a valid k-mer size for this program - please choose "
+                        "6 or 7".format(kmer_size))
 
     else:
-        logger.info("1) Loading Reference DB")
+        logger.info("1) Loading reference database")
         database_path = Path(work_directory, "db/k" + kmer_size)
         database_matrix, organisms, kmer_order = load_database(database_path)
 
-        logger.info("2) Reference DB was loaded with {} reference genomes".format(len(organisms)))
+        logger.info("2) Reference database was loaded with {} reference genomes".format(len(organisms)))
         # get fasta/fastq files
         query_files = is_wanted_file([temp_query for temp_query in os.listdir(query)])
 
@@ -331,9 +331,9 @@ def main(args=False):
 
         taxomy_levels = ["Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Strain"]
 
-        logger.info('5) Writing Results to {}'.format(output_directory))
+        logger.info('5) Writing results to {}'.format(output_directory))
         # All taxonomy levels in one output
-        output_file = Path(output_directory, prefix + "_All_levels.xls")
+        output_file = Path(output_directory,  "{}_All_levels.xls".format(prefix))
         write_results(results, output_file, query_files, taxomy_levels)
 
         # write output for each taxonomy level
@@ -347,7 +347,7 @@ def main(args=False):
             logger.info('6) Creating list of lists with output')
             return refine_results(results, query_files, taxomy_levels)
 
-    logger.info('Done'.format(output_directory))
+    logger.info('Done')
 
 
 if __name__ == "__main__":
