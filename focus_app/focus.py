@@ -24,10 +24,10 @@ def normalise(raw_counts):
     """Normalise raw counts into relative abundance.
 
     Args:
-        raw_counts (numpy.ndarray): Array with raw count.
+        raw_counts (class `numpy.ndarray`): Array with raw count.
 
     Returns:
-        numpy.ndarray: Normalised data.
+        class `numpy.ndarray`: Normalised data.
 
     """
     sum_values = numpy_sum(raw_counts)
@@ -57,10 +57,10 @@ def load_database(database_path):
     """Load database into numpy array.
 
     Args:
-        database_path (PosixPath): Path to database.
+        database_path (class `pathlib.PosixPath`): Path to database.
 
     Returns:
-        numpy.ndarray: Matrix with loaded database.
+        class `numpy.ndarray`: Matrix with loaded database.
         list: List of organisms in the database.
         list: K-mer database order.
 
@@ -83,13 +83,13 @@ def count_kmers(query_file, kmer_size, threads, kmer_order):
     """Count k-mers on FAST(A/Q) file.
 
     Args:
-        query_file (PosixPath): Query in FAST(A/Q) file.
+        query_file (class `pathlib.PosixPath`): Query in FAST(A/Q) file.
         kmer_size (str): K-mer size.
         threads (str): Number of threads to use in the k-mer counting.
         kmer_order (list): List with k-mers database order.
 
     Returns:
-        numpy.ndarray: K-mer counts.
+        class `numpy.ndarray`: K-mer counts.
 
     """
     suffix = str(random.random())
@@ -155,7 +155,7 @@ def write_results(results, output_directory, query_files, taxonomy_level):
 
      Args:
          results (dict): Profile for every metagenome.
-         output_directory (PosixPath): Path to output file.
+         output_directory (class `pathlib.PosixPath`): Path to output file.
          query_files (list): Profiled file(s).
          taxonomy_level (list): Taxonomy level(s).
 
@@ -194,11 +194,11 @@ def run_nnls(database_matrix, query_count):
     """Run non-negative least squares (NNLS) algorithm.
 
     Args:
-        database_matrix (numpy.ndarray): Matrix with counts for organisms in the database.
-        query_count (numpy.ndarray): Metagenome k-mers counts.
+        database_matrix (class `numpy.ndarray`): Matrix with counts for organisms in the database.
+        query_count (class `numpy.ndarray`): Metagenome k-mers counts.
 
     Returns:
-        numpy.ndarray: Abundances of each organism.
+        class `numpy.ndarray`: Abundances of each organism.
 
     """
     return normalise(nnls(database_matrix, query_count)[0])
@@ -291,7 +291,7 @@ def main(args=False):
             logger.critical("{} was not found".format(compressed_db))
 
     # check if at least one of the queries is valid
-    if is_wanted_file(os.listdir(query)) == []:
+    if not is_wanted_file(os.listdir(query)):
         logger.critical("QUERY: {} does not have any Fasta/Fna/Fastq file".format(query))
 
     # check if k-mer counter is installed
@@ -318,7 +318,7 @@ def main(args=False):
 
     else:
         logger.info("1) Loading reference database")
-        database_path = Path(work_directory, "db/k" + kmer_size)
+        database_path = Path(work_directory, "db/k{}".format(kmer_size))
         database_matrix, organisms, kmer_order = load_database(database_path)
 
         logger.info("2) Reference database was loaded with {} reference genomes".format(len(organisms)))
@@ -353,7 +353,7 @@ def main(args=False):
         for pos, level in enumerate(taxomy_levels):
             logger.info('  5.{}) Working on {}'.format(pos + 1, level))
             level_result = aggregate_level(results, pos)
-            output_file = Path(output_directory, "{}_{}_tabular.csv".format(prefix,level))
+            output_file = Path(output_directory, "{}_{}_tabular.csv".format(prefix, level))
             write_results(level_result, output_file, query_files, [level])
 
         if args.list_output:
