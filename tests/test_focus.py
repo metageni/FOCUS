@@ -88,7 +88,7 @@ def test_run_nnls():
 
 def test_aggregate_level():
     # load database
-    database_matrix, organisms, kmer_order = load_database("tests/data/k6_small_sample.txt")
+    database_matrix, organisms, _ = load_database("tests/data/k6_small_sample.txt")
 
     # test 1
     random.seed(500)

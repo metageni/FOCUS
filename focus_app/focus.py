@@ -339,7 +339,7 @@ def main(args=False):
 
             # store results
             query_index = query_files.index(temp_query)
-            for pos in range(len(organisms)):
+            for pos, _ in enumerate(organisms):
                 results[organisms[pos]][query_index] = organisms_abundance[pos]
 
         taxomy_levels = ["Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Strain"]
