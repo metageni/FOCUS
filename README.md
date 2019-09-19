@@ -1,23 +1,23 @@
 ![](logo/focus_small_logo.png "Logo")
 
 #### FOCUS: An Agile Profiler for Metagenomic Data
-* [Installation](#installation)
+  * [Installation](#installation)
     * [dependencies](#dependencies)
     * [pip3](#pip3)
     * [bioconda](#bioconda)
     * [git](#git)
-* [Usage](#usage)
-* [Output](#output)
-* [Citing](#citing)
+  * [Usage](#usage)
+  * [Output](#output)
+  * [Citing](#citing)
 
 ## Installation
 ### Dependencies
-- [Python 3.6](http://www.python.org/download)
-- [Setuptools 36.0.1](https://setuptools.readthedocs.io/en/latest/)
-- [Jellyfish 2.2.6](https://github.com/gmarcais/Jellyfish/releases/tag/v2.2.6). if using macOS, use [bioconda](https://anaconda.org/bioconda/jellyfish)
-- [Numpy 1.12.1](https://github.com/numpy/numpy)
-- [SciPy 0.19.0](https://github.com/scipy/scipy)
-- unzip/curl
+  - [Python 3.6](http://www.python.org/download)
+  - [Setuptools 36.0.1](https://setuptools.readthedocs.io/en/latest/)
+  - [Jellyfish 2.2.6](https://github.com/gmarcais/Jellyfish/releases/tag/v2.2.6). if using macOS, use [bioconda](https://anaconda.org/bioconda/jellyfish)
+  - [Numpy 1.12.1](https://github.com/numpy/numpy)
+  - [SciPy 0.19.0](https://github.com/scipy/scipy)
+  - unzip/curl
 
 ### pip3
 	# pip3 also install numpy and scipy
@@ -74,7 +74,6 @@ line activates the newly created `focus` conda environment.
       -l LOG, --log LOG     Path to log file (Default: STDOUT).
 
     example > focus -q samples_directory
-
 
 ## Output
 FOCUS generates a tabular output per taxonomic level (`Kingdom`, `Phylum`, `Class`, `Order`, `Family`, `Genus`, `Species`, and `Strain`) and one with all levels which can be used as [STAMP](http://kiwi.cs.dal.ca/Software/STAMP)'s input for statistical analysis.
