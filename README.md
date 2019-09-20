@@ -1,14 +1,14 @@
 ![](logo/focus_small_logo.png "Logo")
 
 #### FOCUS: An Agile Profiler for Metagenomic Data
-  * [Installation](#installation)
-    * [dependencies](#dependencies)
-    * [pip3](#pip3)
-    * [bioconda](#bioconda)
-    * [git](#git)
-  * [Usage](#usage)
-  * [Output](#output)
-  * [Citing](#citing)
+* [Installation](#installation)
+  * [dependencies](#dependencies)
+  * [pip3](#pip3)
+  * [bioconda](#bioconda)
+  * [git](#git)
+* [Usage](#usage)
+* [Output](#output)
+* [Citing](#citing)
 
 ## Installation
 ### Dependencies
@@ -37,7 +37,7 @@ line activates the newly created `focus` conda environment.
 
 ### Git
 
-	# these steps should install numpy and scipy
+	# these steps should install Numpy and Scipy
 
 	# clone focus
 	git clone git@github.com:metageni/FOCUS.git
@@ -74,6 +74,7 @@ line activates the newly created `focus` conda environment.
       -l LOG, --log LOG     Path to log file (Default: STDOUT).
 
     example > focus -q samples_directory
+
 
 ## Output
 FOCUS generates a tabular output per taxonomic level (`Kingdom`, `Phylum`, `Class`, `Order`, `Family`, `Genus`, `Species`, and `Strain`) and one with all levels which can be used as [STAMP](http://kiwi.cs.dal.ca/Software/STAMP)'s input for statistical analysis.
