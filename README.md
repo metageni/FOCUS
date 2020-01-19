@@ -10,6 +10,9 @@
 * [Output](#output)
 * [Citing](#citing)
 
+## Binning vs Profiling
+This [blog post](https://onestopdataanalysis.com/metagenome-functional-profile) talks the difference between binning and profiling in case you are interested to learn about it, so you can learn if FOCUS is right for you - FOCUS is a profiling tool.
+
 ## Installation
 ### Dependencies
   - [Python 3.6](http://www.python.org/download)
