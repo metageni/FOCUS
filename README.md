@@ -17,7 +17,7 @@ This [blog post](https://onestopdataanalysis.com/metagenome-profile/) talks the 
 ### Dependencies
   - [Python 3.6](http://www.python.org/download)
   - [Setuptools 36.0.1](https://setuptools.readthedocs.io/en/latest/)
-  - [Jellyfish 2.2.6](https://github.com/gmarcais/Jellyfish/releases/tag/v2.2.6). if using macOS, use [bioconda](https://anaconda.org/bioconda/jellyfish)
+  - [Jellyfish >= 2.2.6](https://github.com/gmarcais/Jellyfish/releases/tag/v2.2.6). if using macOS, use [bioconda](https://anaconda.org/bioconda/jellyfish)
   - [Numpy 1.12.1](https://github.com/numpy/numpy)
   - [SciPy 0.19.0](https://github.com/scipy/scipy)
   - unzip/curl
