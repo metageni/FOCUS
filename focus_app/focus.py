@@ -97,7 +97,7 @@ def count_kmers(query_file, kmer_size, threads, kmer_order):
     output_dump = Path("kmer_dump_{}".format(suffix))
 
     # count and dump kmers counts
-    os.system("jellyfish count -m {} -o {} -s 100M -t {} -C --disk {}".format(kmer_size, output_count, threads,
+    os.system("jellyfish count -m {} -o {} -s 100M -t {} -C {}".format(kmer_size, output_count, threads,
                                                                               query_file))
     os.system("jellyfish dump {} -c > {}".format(output_count, output_dump))
 
