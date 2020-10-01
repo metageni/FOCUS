@@ -3,6 +3,9 @@
 Certain updates only apply to the web version, but they should be obvious to
 figure out since they are likely modification of the interface.
 
+-> FOCUS 1.6:
+- Add `focus_database_utils` to add genoems into the database
+
 -> FOCUS 1.2:
 - FOCUS on pip as metagenomics-focus
 - README edits

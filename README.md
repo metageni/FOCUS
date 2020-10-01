@@ -7,6 +7,7 @@
   * [bioconda](#bioconda)
   * [git](#git)
 * [Usage](#usage)
+* [Add Genomes to Database](#database)
 * [Output](#output)
 * [Citing](#citing)
 
@@ -78,6 +79,27 @@ line activates the newly created `focus` conda environment.
 
     example > focus -q samples_directory
 
+## Database
+New genoems can be added into the database by using command ``focus_database_utils``. 
+
+It only requires a (``-g``) a tabular file (`\t`) as input with a genome per row where the columns are composed by the metadata
+of the genome on `Kingdom`, `Phylum`, `Class`, `Order`, `Family`, `Genus`, `Species`, `Strain`, and `path to FASTA file or the genome file`.
+
+
+    usage: focus_database_utils [-h] [-v] -g GENOMES [-t THREADS] [-l LOG]
+    
+    FOCUS Database Utils
+    
+    optional arguments:
+      -h, --help            show this help message and exit
+      -v, --version         show program's version number and exit
+      -g GENOMES, --genomes GENOMES
+                            Path to directory with FAST(A/Q) files
+      -t THREADS, --threads THREADS
+                            Number Threads used in the k-mer counting (Default: 4)
+      -l LOG, --log LOG     Path to log file (Default: STDOUT).
+    
+    example > focus_database_utils -m GENOMES_TABULAR_FILE
 
 ## Output
 FOCUS generates a tabular output per taxonomic level (`Kingdom`, `Phylum`, `Class`, `Order`, `Family`, `Genus`, `Species`, and `Strain`) and one with all levels which can be used as [STAMP](http://kiwi.cs.dal.ca/Software/STAMP)'s input for statistical analysis.

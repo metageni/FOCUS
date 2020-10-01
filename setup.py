@@ -42,6 +42,7 @@ setup(
     entry_points={
         'console_scripts': [
             'focus = focus_app.focus:main',
+            'focus_database_utils = focus_app.focus_database_utils:main',
         ]
     },
 )
