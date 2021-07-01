@@ -32,7 +32,7 @@ def get_k_mer_count(genomes, kmer_size, threads, kmer_order):
     results = []
     with open(genomes) as f:
         for row in f:
-            row = row.strip().split()
+            row = row.strip().split("\t")
             metadata = row[:-1]
             query_file = row[-1]
 
