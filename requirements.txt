@@ -1,0 +1,5 @@
+numpy
+scipy
+twine
+setuptools_scm
+setuptools
