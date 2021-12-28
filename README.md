@@ -96,7 +96,6 @@ focus -q fastq1.fastq -q fastq2.fastq -q directory/ -o output
 will process the two fastq files `fastq1.fastq` and `fastq2.fastq` as well as any `fasta` or `fastq` files in `directory`
 and put the output in `output`.
 
-We currently do not handle `gzipped` or otherwise compressed input files.
 
 ## Output
 FOCUS generates a tabular output per taxonomic level (`Kingdom`, `Phylum`, `Class`, `Order`, `Family`, `Genus`, `Species`, and `Strain`) and one with all levels which can be used as [STAMP](http://kiwi.cs.dal.ca/Software/STAMP)'s input for statistical analysis.
