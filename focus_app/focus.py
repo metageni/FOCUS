@@ -47,7 +47,7 @@ def is_wanted_file(queries):
         list of str: Sorted list with only .fasta/.fastq/.fna files.
 
     """
-    queries = [query for query in queries if Path(query).suffix.lower() in [".fna", ".fasta", ".fastq"]]
+    queries = [query for query in queries if query.suffix.lower() in [".fna", ".fasta", ".fastq"]]
     queries.sort()
 
     return queries
@@ -227,7 +227,8 @@ def parse_args():
     parser = argparse.ArgumentParser(description="FOCUS: An Agile Profiler for Metagenomic Data",
                                      epilog="example > focus -q samples_directory")
     parser.add_argument('-v', '--version', action='version', version='FOCUS {}'.format(version))
-    parser.add_argument("-q", "--query", help="Path to directory with FAST(A/Q) files", required=True)
+    parser.add_argument("-q", "--query", help="Path to FAST(A/Q) file or directory with these files.", required=True,
+                        action='append')
     parser.add_argument("-o", "--output_directory", help="Path to output files", required=True)
     parser.add_argument("-k", "--kmer_size", help="K-mer size (6 or 7) (Default: 6)", default="6")
     parser.add_argument("-b", "--alternate_directory", help="Alternate directory for your databases", default="")
@@ -246,7 +247,6 @@ def main(args=False):
         args = parse_args()
 
     # parameters and other variables
-    query = Path(args.query)
     prefix = args.output_prefix
     output_directory = Path(args.output_directory)
     kmer_size = args.kmer_size
@@ -270,9 +270,18 @@ def main(args=False):
         Path(output_directory).mkdir(parents=True, mode=511)
         logger.info("OUTPUT: {} does not exist - just created it :)".format(output_directory))
 
-    # check if at least one of the queries is valid
-    if not query.is_dir():
-        logger.critical("QUERY: {} is not a directory".format(query))
+    # parse directory and/or query files
+    query_files = []
+    for f in args.query:
+        p = Path(f)
+        if p.is_dir():
+            query_files += [Path(p, x) for x in os.listdir(p)]
+        elif p.is_file():
+            query_files.append(p)
+    query_files = is_wanted_file(query_files)
+    if query_files == []:
+        logger.critical("QUERY: {} does not have any fasta/fna/fastq files".format(args.query))
+        sys.exit(1)
 
     # check if database exists
     if not database_path.exists():
@@ -290,10 +299,6 @@ def main(args=False):
         else:
             logger.critical("{} was not found".format(compressed_db))
 
-    # check if at least one of the queries is valid
-    if not is_wanted_file(os.listdir(query)):
-        logger.critical("QUERY: {} does not have any Fasta/Fna/Fastq file".format(query))
-
     # check if k-mer counter is installed
     elif not jellyfish_path:
         logger.critical("K-MER COUNTER: Jellyfish is not installed. Please install 2.XX")
@@ -302,10 +307,6 @@ def main(args=False):
     elif jellyfish_version != "2":
         logger.critical("K-MER COUNTER: Jellyfish needs to be version 2.XX. You have version {}".
                         format(jellyfish_version))
-
-    # check if query is exists
-    elif not query.exists():
-        logger.critical("QUERY: {} does not exist".format(query))
 
     # check if work directory exists
     elif work_directory != work_directory or not work_directory.exists():
@@ -322,8 +323,6 @@ def main(args=False):
         database_matrix, organisms, kmer_order = load_database(database_path)
 
         logger.info("2) Reference database was loaded with {} reference genomes".format(len(organisms)))
-        # get fasta/fastq files
-        query_files = is_wanted_file([temp_query for temp_query in os.listdir(query)])
 
         results = {taxa: [0] * len(query_files) for taxa in organisms}
 
@@ -332,7 +331,7 @@ def main(args=False):
 
             logger.info("   Counting k-mers")
             # count k-mers
-            query_count = normalise(count_kmers(Path(query, temp_query), kmer_size, threads, kmer_order))
+            query_count = normalise(count_kmers(temp_query, kmer_size, threads, kmer_order))
             # find the best set of organisms that reconstruct the user metagenome using NNLS
             logger.info("   Running FOCUS")
             organisms_abundance = run_nnls(database_matrix, query_count)

@@ -79,8 +79,30 @@ line activates the newly created `focus` conda environment.
 
     example > focus -q samples_directory
 
+## Query
+
+The query can be one or more fasta or fastq files, or a directory containing those files. We filter for
+files that end `.fasta`, `.fastq`, or `.fna`, so please ensure any file that you want processed has one
+of those file extensions.
+
+You can provide a mixture of input files or directories, and we will filter the files as appropriate.
+
+For example:
+
+```bash
+focus -q fastq1.fastq -q fastq2.fastq -q directory/ -o output
+```
+
+will process the two fastq files `fastq1.fastq` and `fastq2.fastq` as well as any `fasta` or `fastq` files in `directory`
+and put the output in `output`.
+
+We currently do not handle `gzipped` or otherwise compressed input files.
+
+## Output
+FOCUS generates a tabular output per taxonomic level (`Kingdom`, `Phylum`, `Class`, `Order`, `Family`, `Genus`, `Species`, and `Strain`) and one with all levels which can be used as [STAMP](http://kiwi.cs.dal.ca/Software/STAMP)'s input for statistical analysis.
+
 ## Database
-New genoems can be added into the database by using command ``focus_database_utils``. 
+New genomes can be added into the database by using command ``focus_database_utils``. 
 
 It only requires a (``-g``) a tabular file (`\t`) as input with a genome per row where the columns are composed by the metadata
 of the genome on `Kingdom`, `Phylum`, `Class`, `Order`, `Family`, `Genus`, `Species`, `Strain`, and `path to FASTA file or the genome file`.
@@ -101,8 +123,6 @@ of the genome on `Kingdom`, `Phylum`, `Class`, `Order`, `Family`, `Genus`, `Spec
     
     example > focus_database_utils -m GENOMES_TABULAR_FILE
 
-## Output
-FOCUS generates a tabular output per taxonomic level (`Kingdom`, `Phylum`, `Class`, `Order`, `Family`, `Genus`, `Species`, and `Strain`) and one with all levels which can be used as [STAMP](http://kiwi.cs.dal.ca/Software/STAMP)'s input for statistical analysis.
 
 ## Citing
 FOCUS was written by Genivaldo G. Z. Silva. Feel free to [contact me](mailto:genivaldo.gueiros@gmail.com)
