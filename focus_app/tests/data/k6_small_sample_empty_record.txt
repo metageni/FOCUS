@@ -1,0 +1,3 @@
+Kingdom	Phylum	Class	Order	Family	Genus	Species	Strain	GAACGC	GAACGA	CACCCA
+Bacteria	Spirochaetes	Spirochaetia	Spirochaetales	Spirochaetaceae	Sphaerochaeta	Sphaerochaeta_pleomorpha	Sphaerochaeta_pleomorpha_Grapes_uid82365	0	0	0
+Bacteria	Firmicutes	Bacilli	Lactobacillales	Streptococcaceae	Streptococcus	Streptococcus_suis	Streptococcus_suis_98HAH33_uid58665	0	0	1

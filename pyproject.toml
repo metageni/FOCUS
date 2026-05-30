@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "metagenomics-focus"
+version = "2.0.0"
+description = "FOCUS: An Agile Profiler for Metagenomic Data"
+requires-python = ">=3.8"
+dependencies = [
+    "click>=8.0",
+    "numpy>=1.12.1",
+    "scipy>=0.19.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "pytest-cov>=4.0"]
+
+# NOTE: uv is a developer tool only (https://docs.astral.sh/uv/).
+# The package installs with standard pip/conda. uv is NOT a build dependency.
+
+[project.scripts]
+focus = "focus_app.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["focus_app*"]
+
+[tool.pytest.ini_options]
+testpaths = ["focus_app/tests"]

@@ -1,0 +1,40 @@
+-- focus version history --
+
+-> focus 2.0.0 (2026-05-30):
+- Full rewrite of FOCUS into focus package
+- CLI separated from core logic (cli.py vs focus.py)
+- profile() added as a clean programmatic entry point
+- Unit test suite with 99% coverage (57 tests)
+- Fake FASTQ test data added
+- Cross-validation tests comparing focus vs original FOCUS output
+- pyproject.toml replaces setup.py
+- Dockerfile and Docker/Dockerfile updated for new package name
+
+-- Original FOCUS version history --
+
+-> FOCUS 1.6:
+- Add `focus_database_utils` to add genomes into the database
+
+-> FOCUS 1.2:
+- FOCUS on pip as metagenomics-focus
+- README edits
+
+-> FOCUS 1.1:
+- Setuptools
+- Set FOCUS to be agnostic to the location of the script
+
+-> FOCUS 1.0:
+- Refactor to Python 3
+
+-> FOCUS 0.31:
+- Parameter "-s" for multiple samples is not required anymore
+
+-> FOCUS 0.3:
+- Fixed minor bug in the STAMP input creation
+
+-> FOCUS 0.28:
+- Database updated (08/08/2015) with 2785 complete genomes
+- Multiple sample support with STAMP-compatible output
+
+-> FOCUS 0.24:
+- Fixed Jellyfish 2.x compatibility
