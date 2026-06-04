@@ -33,21 +33,10 @@ See this [blog post](https://onestopdataanalysis.com/metagenome-profile/) for th
 ### Bioconda (recommended)
 
 ```bash
-conda install -c bioconda -c conda-forge metagenomics-focus
+conda install -c bioconda -c conda-forge focus
 ```
 
 This installs FOCUS and Jellyfish automatically.
-
-### pip
-
-```bash
-pip install metagenomics-focus
-
-# also install Jellyfish separately (macOS)
-brew install jellyfish
-# or via bioconda
-conda install -c bioconda jellyfish
-```
 
 ### From source
 
